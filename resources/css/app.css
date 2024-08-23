@@ -3,3 +3,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#blob1, #blob2, #blob3 {
+    @apply absolute -z-10;
+    transition: all 2s linear;
+}
+
+#blob1.active {
+    @apply !-left-40 !top-1/2
+}
+
+#blob2.active {
+    @apply !top-0 !-right-24
+}
+
+#blob3.active {
+    @apply !top-1/2 !-right-20
+}
