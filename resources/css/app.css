@@ -20,3 +20,37 @@
 #blob3.active {
     @apply !top-1/2 !-right-20
 }
+
+#modalOverlay, .child-modal-overlay {
+    transition: all 0.5s linear;
+}
+
+.modal {
+    @apply absolute rounded-lg top-full left-1/2 -translate-x-1/2 bg-white shadow-lg;
+    transition: all 0.3s linear;
+}
+
+.modal.active, .child-modal.active {
+    @apply -translate-y-1/2 !top-1/2
+}
+
+#modalOverlay.active, .child-modal-overlay.active {
+    @apply bg-black/50
+}
+
+.form-control input {
+    @apply py-3 px-6 text-lg font-semibold bg-transparent border-2 rounded-3xl border-[#aeaeae] appearance-none text-[#aeaeae] w-full;
+}
+
+.form-control input:hover {
+    @apply border-black;
+}
+
+.form-control input:hover:focus {
+    @apply border-pdam-blue;
+}
+
+.form-control label {
+    @apply absolute text-lg px-2 bg-white font-semibold left-8 top-1 -translate-y-4 origin-[0] scale-75 text-[#aeaeae];
+    transition: all 0.2s linear;
+}
