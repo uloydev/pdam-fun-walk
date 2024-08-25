@@ -17,10 +17,10 @@
 
         {{-- waves --}}
         <img id="wave2" src="{{ asset('assets/img/wave2.png') }}" alt="wave2"
-            class="absolute h-[120%] w-[200%] -top-[120%] right-0 object-fill max-w-[200%] -z-10"
+            class="absolute h-[105%] w-[200%] -top-[105%] right-0 object-fill max-w-[200%] -z-10"
             style="transition: all 3s linear;">
         <img id="wave1" src="{{ asset('assets/img/wave1.png') }}" alt="wave1"
-            class="absolute h-[120%] w-[200%] -top-[120%] left-0 object-fill max-w-[200%] -z-10"
+            class="absolute h-[105%] w-[200%] -top-[105%] left-0 object-fill max-w-[200%] -z-10"
             style="transition: all 3s linear;">
 
         {{-- blobs --}}
@@ -33,9 +33,9 @@
         <div class="pt-28">
             <div class="w-full flex justify-center">
                 <img id="banner" src="{{ asset('assets/img/banner.png') }}" alt="banner"
-                    class="w-2/3 opacity-0 transition duration-1000">
+                    class="w-4/5 opacity-0 transition duration-1000">
             </div>
-            <p class="mt-16 text-white text-center max-w-[50%] mx-auto text-lg">
+            <p class="mt-16 text-white text-center max-w-[75%] mx-auto text-lg">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, nesciunt molestias. Eaque corrupti
                 voluptatibus inventore quidem quibusdam rerum quo modi. Obcaecati fugiat soluta libero quis eveniet minima
                 magnam cupiditate veritatis!
@@ -75,7 +75,7 @@
             </div>
         </div> --}}
 
-    <div id="modalOverlay" class="fixed h-screen w-full top-0 left-0 overflow-hidden active">
+    <div id="modalOverlay" class="fixed h-screen w-full top-0 left-0 overflow-hidden hidden">
         {{-- parent modal --}}
         <div id="parentModal" class="modal max-h-1/2 max-w-2/3 p-12 flex flex-col gap-y-6">
             <button data-target-modal="#customerModal"
@@ -87,7 +87,7 @@
         </div>
 
         {{-- customer modal --}}
-        <div id="customerModal" class="modal p-12 w-1/3 max-w-full active">
+        <div id="customerModal" class="modal p-12 w-1/2 max-w-full">
             <h3 class="mb-12 font-medium text-3xl">Registrasi Pelanggan</h3>
             <form action="" method="POST" class="grid grid-cols-1 gap-y-6">
                 <div class="relative form-control">
@@ -109,15 +109,15 @@
                     <label for="ktp"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">NIK</label>
                 </div>
-                <div class="flex gap-x-2">
-                    <div class="relative form-control">
+                <div class="grid grid-cols-2 gap-x-2 w-full">
+                    <div class="relative form-control col-span-1">
                         <input type="text" name="customerID" id="customerID"
                             class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
                         <label for="customerID"
                             class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">ID
                             Pelanggan</label>
                     </div>
-                    <div class="relative form-control">
+                    <div class="relative form-control col-span-1">
                         <input type="text" name="phone" id="phone"
                             class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
                         <label for="phone"
@@ -200,7 +200,7 @@
         </div>
 
         {{-- public modal --}}
-        <div id="publicModal" class="modal p-12 w-1/3 max-w-full">
+        <div id="publicModal" class="modal p-12 w-1/2 max-w-full">
             <h3 class="mb-12 font-medium text-3xl">Registrasi Non Pelanggan</h3>
             <form action="" method="POST" class="grid grid-cols-1 gap-y-6">
                 <div class="relative form-control">
@@ -271,6 +271,7 @@
 
 @push('script')
     <script>
+        let modalStack = [];
         document.addEventListener("DOMContentLoaded", () => {
             const wave1 = document.getElementById('wave1');
             const wave2 = document.getElementById('wave2');
@@ -282,8 +283,8 @@
 
             wave1.classList.replace('left-0', '-left-full');
             wave2.classList.replace('right-0', '-right-full');
-            wave1.classList.replace('-top-[120%]', 'top-0');
-            wave2.classList.replace('-top-[120%]', 'top-0');
+            wave1.classList.replace('-top-[105%]', 'top-0');
+            wave2.classList.replace('-top-[105%]', 'top-0');
             setTimeout(() => {
                 banner.classList.replace('opacity-0', 'opacity-100');
                 setTimeout(() => {
@@ -306,10 +307,12 @@
                     modalOverlay.classList.remove('hidden');
 
                     // hide current active modal
-                    const activeModal = modalOverlay.querySelector('.modal.active');
-                    if (activeModal) {
-                        activeModal.classList.remove('active');
-                    }
+                    // const activeModal = modalOverlay.querySelector('.modal.active');
+                    // if (activeModal) {
+                    //     activeModal.classList.remove('active');
+                    // }
+
+                    modalStack.push(btn.dataset.targetModal);
 
                     // show target modal
                     setTimeout(() => {
@@ -329,18 +332,28 @@
 
             // handle overlay / outer click to close modal
             modalOverlay.addEventListener('click', () => {
-                const activeModal = modalOverlay.querySelector('.modal.active');
+                let activeModal;
 
+                if (modalStack.length > 0) {
+                    const modalSelector = modalStack.pop();
+                    if (modalSelector == ".child-modal") {
+                        closeChildModal();
+                        return;
+                    }
+                    activeModal = document.querySelector(modalSelector);
+                }
                 // hide modal
-                modalOverlay.classList.remove('active');
                 if (activeModal) {
                     activeModal.classList.remove('active');
                 }
+                if (modalStack.length == 0) {
+                    modalOverlay.classList.remove('active');
+                    setTimeout(() => {
+                        modalOverlay.classList.add('hidden');
+                    }, 300);
+                }
 
                 // hide overlay
-                setTimeout(() => {
-                    modalOverlay.classList.add('hidden');
-                }, 300);
             });
 
             // handle radio stock info
@@ -397,6 +410,10 @@
             const childModal = document.querySelector('.child-modal');
             const overlay = childModal.parentElement;
 
+            if (modalStack[modalStack.length - 1] == '.child-modal') {
+                modalStack.pop();
+            }
+
             overlay.classList.remove('active');
             if (childModal) {
                 childModal.classList.remove('active');
@@ -411,6 +428,7 @@
         const openChildModal = () => {
             const childModal = document.querySelector('.child-modal');
             const overlay = childModal.parentElement;
+            modalStack.push('.child-modal');
 
             // show modal overlay
             overlay.classList.remove('hidden');
