@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <nav class="h-20 w-full container pt-5 fixed top-0 left-1/2 -translate-x-1/2 z-50">
+    <nav class="h-20 w-full container pt-5 fixed top-0 left-1/2 -translate-x-1/2">
         <div class="flex justify-between text-white">
             <a class="text-xl xl:text-4xl font-bold h-full flex gap-x-4 items-center" href="{{ route('index') }}">
                 <img class="pl-4 h-6 xl:pl-0 xlh-10" alt="navbar logo" src="{{ asset('assets/img/logo.png') }}">
