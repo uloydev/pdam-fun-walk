@@ -1,11 +1,28 @@
 <?php
 
+use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ProfileController;
+use App\Models\ShirtStock;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
+    return view('index', [
+        'shirt_stock' => ShirtStock::all(),
+    ]);
 })->name('index');
+
+Route::get('/participant/verify', function () {
+    return "OK";
+})->name('participant.verify');
+
+Route::get('/participant/register', function () {
+    
+})->name('participant.register');
+
+Route::name('participant.')->prefix('participant')->controller(ParticipantController::class)->group(function () {
+    Route::post('/register', 'store')->name('register');
+    Route::get('/verify', 'verify')->name('verify');
+});
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

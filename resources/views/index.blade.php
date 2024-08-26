@@ -89,38 +89,41 @@
         {{-- customer modal --}}
         <div id="customerModal" class="modal p-12 w-1/2 max-w-full">
             <h3 class="mb-12 font-medium text-3xl">Registrasi Pelanggan</h3>
-            <form action="" method="POST" class="grid grid-cols-1 gap-y-6">
+            <form id="customerForm" action="" method="POST" class="grid grid-cols-1 gap-y-6">
+                @method('POST')
+                @csrf
+                <input type="hidden" name="type" value="customer">
                 <div class="relative form-control">
-                    <input type="text" name="name" id="name"
+                    <input type="text" name="name" id="customer-name"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="name"
+                    <label for="customer-name"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nama
                         Lengkap</label>
                 </div>
                 <div class="relative form-control">
-                    <input type="email" name="email" id="email"
+                    <input type="email" name="email" id="customer-email"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="email"
+                    <label for="customer-email"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Email</label>
                 </div>
                 <div class="relative form-control">
-                    <input type="text" name="ktp" id="ktp"
+                    <input type="text" name="nik" id="customer-ktp"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="ktp"
+                    <label for="customer-ktp"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">NIK</label>
                 </div>
                 <div class="grid grid-cols-2 gap-x-2 w-full">
                     <div class="relative form-control col-span-1">
-                        <input type="text" name="customerID" id="customerID"
+                        <input type="text" name="customer_code" id="customer-customerID"
                             class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                        <label for="customerID"
+                        <label for="customer-customerID"
                             class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">ID
                             Pelanggan</label>
                     </div>
                     <div class="relative form-control col-span-1">
-                        <input type="text" name="phone" id="phone"
+                        <input type="text" name="phone" id="customer-phone"
                             class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                        <label for="phone"
+                        <label for="customer-phone"
                             class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nomor
                             Telpon</label>
                     </div>
@@ -129,30 +132,14 @@
                     <p class="text-lg font-medium">Ukuran Baju :</p>
                     {{-- radio input --}}
                     <div class="flex gap-x-2">
-                        <div>
-                            <input type="radio" name="size" id="size-s" value="S" class="peer hidden"
-                                data-stock-info="200">
-                            <label for="size-s"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">S</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="size" id="size-m" value="M" class="peer hidden"
-                                data-stock-info="100">
-                            <label for="size-m"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">M</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="size" id="size-l" value="L" class="peer hidden"
-                                data-stock-info="300">
-                            <label for="size-l"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">L</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="size" id="size-xl" value="XL" class="peer hidden"
-                                data-stock-info="250">
-                            <label for="size-xl"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">XL</label>
-                        </div>
+                        @foreach ($shirt_stock as $shirt)
+                            <div>
+                                <input type="radio" name="shirt_stock_id" id="customer-size-{{$shirt->id}}" value="{{$shirt->id}}" class="peer hidden"
+                                data-stock-info="{{$shirt->stock}}">
+                                <label for="customer-size-{{$shirt->id}}"
+                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{$shirt->size}}</label>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <p id="stockInfo" class="text-[#B0B0B0] text-right mx-10 hidden"></p>
@@ -172,9 +159,9 @@
                         <h3 class="mb-6 font-medium text-3xl">Tambah Peserta</h3>
                         <div id="formWrapper" class="flex flex-col gap-y-6">
                             <div class="relative form-control">
-                                <input type="text" name="additionalName[]"
+                                <input id="additionalName1" type="text" name="additional_participant[]"
                                     class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                                <label
+                                <label for="additionalName1"
                                     class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nama
                                     Lengkap</label>
                             </div>
@@ -188,7 +175,7 @@
                                 class="inline-block px-8 py-3 bg-[#cdcdcd] text-[#656565] text-lg rounded-2xl font-semibold transition-all shadow hover:bg-[#6c6c6c] hover:text-white">
                                 Buang
                             </button>
-                            <button type="button" onclick="closeChildModal()"
+                            <button type="button" onclick="saveChildModalValue()"
                                 class="inline-block px-8 py-3 bg-pdam-blue text-white text-lg rounded-2xl font-semibold transition-all shadow hover:bg-pdam-dark-blue">
                                 Simpan
                             </button>
@@ -202,30 +189,33 @@
         {{-- public modal --}}
         <div id="publicModal" class="modal p-12 w-1/2 max-w-full">
             <h3 class="mb-12 font-medium text-3xl">Registrasi Non Pelanggan</h3>
-            <form action="" method="POST" class="grid grid-cols-1 gap-y-6">
+            <form id="publicForm" action="" method="POST" class="grid grid-cols-1 gap-y-6">
+                @method('POST')
+                @csrf
+                <input type="hidden" name="type" value="public">
                 <div class="relative form-control">
-                    <input type="text" name="name" id="name"
+                    <input type="text" name="name" id="public-name"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="name"
+                    <label for="public-name"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nama
                         Lengkap</label>
                 </div>
                 <div class="relative form-control">
-                    <input type="text" name="ktp" id="ktp"
+                    <input type="text" name="nik" id="public-ktp"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="ktp"
+                    <label for="public-ktp"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">NIK</label>
                 </div>
                 <div class="relative form-control">
-                    <input type="email" name="email" id="email"
+                    <input type="email" name="email" id="public-email"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="email"
+                    <label for="public-email"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Email</label>
                 </div>
                 <div class="relative form-control">
-                    <input type="text" name="phone" id="phone"
+                    <input type="text" name="phone" id="public-phone"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="phone"
+                    <label for="public-phone"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nomor
                         Telpon</label>
                 </div>
@@ -233,30 +223,14 @@
                     <p class="text-lg font-medium">Ukuran Baju :</p>
                     {{-- radio input --}}
                     <div class="flex gap-x-2">
-                        <div>
-                            <input type="radio" name="size" id="size-s" value="S" class="peer hidden"
-                                data-stock-info="200">
-                            <label for="size-s"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">S</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="size" id="size-m" value="M" class="peer hidden"
-                                data-stock-info="100">
-                            <label for="size-m"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">M</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="size" id="size-l" value="L" class="peer hidden"
-                                data-stock-info="300">
-                            <label for="size-l"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">L</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="size" id="size-xl" value="XL" class="peer hidden"
-                                data-stock-info="250">
-                            <label for="size-xl"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">XL</label>
-                        </div>
+                        @foreach ($shirt_stock as $shirt)
+                            <div>
+                                <input type="radio" name="shirt_stock_id" id="public-size-{{$shirt->id}}" value="{{$shirt->id}}" class="peer hidden"
+                                data-stock-info="{{$shirt->stock}}">
+                                <label for="public-size-{{$shirt->id}}"
+                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{$shirt->size}}</label>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <p id="stockInfo" class="text-[#B0B0B0] text-right mx-10 hidden"></p>
@@ -271,8 +245,17 @@
 
 @push('script')
     <script>
+        let hasAdditionalParticipant = false;
         let modalStack = [];
+        let initialAlert = {!! session('alert') ? json_encode(session('alert')) : 'null' !!};
+
+
         document.addEventListener("DOMContentLoaded", () => {
+            // fire initial alert
+            if (initialAlert) {
+                Swal.fire(initialAlert);
+            }
+
             const wave1 = document.getElementById('wave1');
             const wave2 = document.getElementById('wave2');
             const banner = document.getElementById('banner');
@@ -359,14 +342,18 @@
             // handle radio stock info
             const forms = document.querySelectorAll('.modal form');
             forms.forEach(form => {
-                const stockInfo = form.querySelector('#stockInfo');
-                const radios = form.querySelectorAll('input[name="size"]');
+                console.log(form);
+                const stockInfo = document.querySelector(`#${form.id} #stockInfo`);
+                console.log(stockInfo);
+                const radios = document.querySelectorAll(`#${form.id} input[name="shirt_stock_id"]`);
+                console.log(radios);
                 radios.forEach(radio => {
                     radio.addEventListener('change', () => {
                         stockInfo.classList.remove('hidden');
                         stockInfo.textContent = `Stock ${radio.dataset.stockInfo}`;
                     });
                 });
+                form.addEventListener('submit', sumbitForm);
             });
 
             // handle add participant input
@@ -378,11 +365,14 @@
                 const lastChild = wrapper.lastElementChild;
                 // reset input value
                 lastChild.querySelector('input').value = '';
+                lastChild.querySelector('input').id = 'additionalName1';
+                lastChild.querySelector('label').htmlFor = 'additionalName1';
                 // remove all child
                 wrapper.innerHTML = '';
                 // append last child
                 wrapper.appendChild(lastChild);
                 closeChildModal();
+                hasAdditionalParticipant = false;
             });
 
             addParticipantInputBtn.addEventListener('click', (e) => {
@@ -391,7 +381,12 @@
 
                 // max 3 additional participant
                 if (parent.children.length == 3) {
-                    alert('Maksimal 3 peserta tambahan');
+                    Swal.fire({
+                        title: 'Maaf...',
+                        text: 'Maksimal 3 peserta tambahan',
+                        icon: 'error',
+                        confirmButtonText: 'Kembali'
+                    })
                     return;
                 }
 
@@ -401,10 +396,17 @@
                 const clone = lastChild.cloneNode(true);
                 // reset input value
                 clone.querySelector('input').value = '';
+                clone.querySelector('input').id = `additionalName${parent.children.length+1}`;
+                clone.querySelector('label').htmlFor = `additionalName${parent.children.length+1}`;
                 // append to parent
                 parent.appendChild(clone);
             });
         });
+
+        const saveChildModalValue = () => {
+            hasAdditionalParticipant = true;
+            closeChildModal();
+        }
 
         const closeChildModal = () => {
             const childModal = document.querySelector('.child-modal');
@@ -438,6 +440,89 @@
                 childModal.classList.add('active');
                 overlay.classList.add('active');
             }, 300);
+        }
+
+        const closeAllModal = () => {
+            const modals = document.querySelectorAll('.modal');
+            const overlay = document.getElementById('modalOverlay');
+
+            modals.forEach(modal => {
+                modal.classList.remove('active');
+            });
+
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300);
+
+            // clear forms value
+            const forms = document.querySelectorAll('.modal form');
+            forms.forEach(form => {
+                form.reset();
+            });
+        }
+
+        const sumbitForm = (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            if (!hasAdditionalParticipant) {
+                formData.delete('additional_participant[]');
+            }
+            const value = Object.fromEntries(formData.entries());
+            Swal.fire({
+                title: "Apakah data yang anda masukkan sudah benar?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Ya",
+                cancelButtonText: "Tidak",
+                showLoaderOnConfirm: true,
+                preConfirm: async () => {
+                    try {
+                        const response = await fetch(
+                            '/participant/register', {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                },
+                                body: formData,
+                            }
+                        );
+                        let data = await response.json();
+                        data.statusCode = response.status;
+                        return data;
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                console.log(result);
+                if (result.isConfirmed) {
+                    if (result.value.statusCode > 299) {
+                        Swal.fire({
+                            title: 'Maaf...',
+                            html: `<ul class="text-left text-red-500 list-disc p-4 flex flex-col gap-y-2 text-lg rounded-lg bg-red-200">
+                                ${Object.keys(result.value.errors).map(key => '<li class="mx-4">'+result.value.errors[key]+'</li>').join('')}
+                            </ul>`,
+                            icon: 'error',
+                            confirmButtonText: 'Kembali'
+                        });
+                    } else {
+                        closeAllModal();
+                        Swal.fire({
+                            title: 'Verifikasi email anda',
+                            text: 'hallo, terimakasih telah mendaftar!. silahkan lakukan verifikasi email, dengan cara klik link yang dikirim ke ' + formData.get('email'),
+                            icon: 'success',
+                            confirmButtonText: 'Kembali'
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    }
+
+                }
+            });
+
         }
     </script>
 @endpush
