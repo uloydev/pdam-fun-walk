@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <p id="stockInfo" class="text-[#B0B0B0] text-right mx-10 hidden"></p>
-                <small class="text-xs lg:text-sm text-[#B0B0B0]">* Satu ID Pelanggan akan mendapatkan satu Fun Walk Kit yang berisi 1 Baju, 1 Tas, 1 Tumbler dan 1 Snack</small>
+                <small class="text-xs lg:text-sm text-[#B0B0B0]">* Satu ID pelanggan akan mendapatkan satu Fun Walk Kit yang berisi 1 baju, 1 tas, 1 tumbler, dan 1 snack.</small>
                 <button type="button" onclick="openChildModal()"
                     class="block w-full py-3 bg-[#cdcdcd] text-[#656565] text-lg rounded-2xl font-semibold transition-all shadow hover:bg-[#6c6c6c] hover:text-white mt-3 lg:mt-6">
                     Tambah Pendamping
