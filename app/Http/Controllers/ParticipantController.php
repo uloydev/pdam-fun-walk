@@ -174,7 +174,7 @@ class ParticipantController extends Controller
 
         return redirect()->route('index')->with('alert', [
             "title" => 'Terimakasih!',
-            "text" => 'Data peserta berhasil diverifikasi',
+            "html" => '<p>Data peserta berhasil diverifikasi</p><p>Silahkan check email untuk bukti registrasi</p>',
             "icon" => 'success',
             "confirmButtonText" => 'Kembali'
         ]);

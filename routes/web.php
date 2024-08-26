@@ -11,18 +11,12 @@ Route::get('/', function () {
     ]);
 })->name('index');
 
-Route::get('/participant/verify', function () {
-    return "OK";
-})->name('participant.verify');
-
-Route::get('/participant/register', function () {
-    
-})->name('participant.register');
-
 Route::name('participant.')->prefix('participant')->controller(ParticipantController::class)->group(function () {
     Route::post('/register', 'store')->name('register');
     Route::get('/verify', 'verify')->name('verify');
 });
+
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
