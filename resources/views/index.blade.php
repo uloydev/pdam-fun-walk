@@ -515,7 +515,7 @@
             console.log(formData.getAll('additional_participant[][name]'));
             const value = Object.fromEntries(formData.entries());
             Swal.fire({
-                title: "Apakah data yang anda masukkan sudah benar?",
+                title: "Apakah data yang Anda masukkan sudah benar?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Ya",
