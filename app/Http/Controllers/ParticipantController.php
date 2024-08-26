@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ParticipantVerification;
+use App\Mail\ParticipantVerified;
 use App\Models\Participant;
 use App\Models\ShirtStock;
 use Illuminate\Http\Request;
@@ -169,6 +170,7 @@ class ParticipantController extends Controller
         $participant->save();
 
         $participant->shirtStock->decrement('stock');
+        Mail::to($participant->email)->send(new ParticipantVerified($participant, $shirtStock));
 
         return redirect()->route('index')->with('alert', [
             "title" => 'Terimakasih!',

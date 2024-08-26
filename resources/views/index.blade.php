@@ -153,7 +153,7 @@
                 <small class="text-xs lg:text-sm text-[#B0B0B0]">* Satu ID Pelanggan akan mendapatkan satu Fun Walk Kit yang berisi 1 Baju, 1 Tas, 1 Tumbler dan 1 Snack</small>
                 <button type="button" onclick="openChildModal()"
                     class="block w-full py-3 bg-[#cdcdcd] text-[#656565] text-lg rounded-2xl font-semibold transition-all shadow hover:bg-[#6c6c6c] hover:text-white mt-3 lg:mt-6">
-                    Tambah Peserta
+                    Tambah Pendamping
                 </button>
                 <button type="submit"
                     class="block w-full py-3 bg-pdam-blue text-white text-lg rounded-2xl font-semibold transition-all shadow hover:bg-pdam-dark-blue">
@@ -433,13 +433,13 @@
                 // reset input value
                 clone.querySelector('input').value = '';
                 clone.querySelector('input').id = `additionalName${parent.children.length+1}`;
-                clone.querySelector('input').name = `additional_participant[${parent.children.length+1}][name]`;
+                clone.querySelector('input').name = `additional_participant[${parent.children.length}][name]`;
 
                 clone.querySelector('label').htmlFor = `additionalName${parent.children.length+1}`;
                 
                 clone.querySelector('select').value = '';
                 clone.querySelector('select').id = `additionalRelation${parent.children.length+1}`;
-                clone.querySelector('select').name = `additional_participant[${parent.children.length+1}][relation]`;
+                clone.querySelector('select').name = `additional_participant[${parent.children.length}][relation]`;
                 // append to parent
                 parent.appendChild(clone);
             });
