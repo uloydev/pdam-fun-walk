@@ -556,7 +556,7 @@
                         closeAllModal();
                         Swal.fire({
                             title: 'Verifikasi email anda',
-                            text: 'hallo, terimakasih telah mendaftar!. silahkan lakukan verifikasi email, dengan cara klik link yang dikirim ke ' + formData.get('email'),
+                            html: `<p>Hallo, Terimakasih telah mendaftar.</p><p>Silahkan lakukan verifikasi dengan klik link yang telah dikirimkan melalui email  ${formData.get('email')}`,
                             icon: 'success',
                             confirmButtonText: 'Kembali'
                         }).then((result) => {
