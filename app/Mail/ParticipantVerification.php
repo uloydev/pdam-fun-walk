@@ -18,7 +18,8 @@ class ParticipantVerification extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public Participant $participant
+        public Participant $participant,
+        public string $link
     )
     {
     }
@@ -29,7 +30,7 @@ class ParticipantVerification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Participant Verification',
+            subject: 'Verifikasi Peserta Funwalk',
         );
     }
 

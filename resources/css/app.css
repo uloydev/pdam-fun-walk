@@ -10,15 +10,15 @@
 }
 
 #blob1.active {
-    @apply !-left-40 !top-1/2
+    @apply lg:!-left-40 lg:!top-1/2 -left-32 top-80
 }
 
 #blob2.active {
-    @apply !top-0 !-right-24
+    @apply lg:!top-0 lg:!-right-24 !-right-4 !top-[15%]
 }
 
 #blob3.active {
-    @apply !top-1/2 !-right-20
+    @apply lg:!top-1/2 lg:!-right-20 !-right-14 !top-1/2
 }
 
 #modalOverlay, .child-modal-overlay {
@@ -39,18 +39,28 @@
 }
 
 .form-control input {
-    @apply py-3 px-6 text-lg font-semibold bg-transparent border-2 rounded-3xl border-[#aeaeae] appearance-none text-[#aeaeae] w-full;
+    @apply py-2 lg:py-3 px-6 lg:text-lg font-semibold bg-transparent border-2 rounded-3xl border-[#aeaeae] appearance-none text-[#aeaeae] w-full;
 }
 
 .form-control input:hover {
     @apply border-black;
 }
 
-.form-control input:hover:focus {
+.form-control input:focus {
     @apply border-pdam-blue;
 }
 
 .form-control label {
-    @apply absolute text-lg px-2 bg-white font-semibold left-8 top-1 -translate-y-4 origin-[0] scale-75 text-[#aeaeae];
+    @apply absolute lg:text-lg px-2 bg-white font-semibold left-8 top-1 -translate-y-4 origin-[0] scale-75 text-[#aeaeae];
     transition: all 0.2s linear;
+}
+
+input:-webkit-autofill {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #aeaeae !important;
+    @apply !border-[#aeaeae];
+}
+
+input:-webkit-autofill:focus {
+    @apply !border-pdam-blue;
 }

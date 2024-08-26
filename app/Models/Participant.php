@@ -19,6 +19,7 @@ class Participant extends Model
         'token',
         'additional_participant',
         'shirt_stock_id',
+        'instagram',
     ];
 
     protected $casts = [

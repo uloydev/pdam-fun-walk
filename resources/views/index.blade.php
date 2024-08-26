@@ -3,8 +3,8 @@
 @section('content')
     <nav class="h-20 w-full container pt-5 fixed top-0 left-1/2 -translate-x-1/2 z-50">
         <div class="flex justify-between text-white">
-            <a class="text-4xl font-bold h-full flex gap-x-4 items-center" href="{{ route('index') }}">
-                <img class="h-10" alt="navbar logo" src="{{ asset('assets/img/logo.png') }}">
+            <a class="text-xl xl:text-4xl font-bold h-full flex gap-x-4 items-center" href="{{ route('index') }}">
+                <img class="pl-4 h-6 xl:pl-0 xlh-10" alt="navbar logo" src="{{ asset('assets/img/logo.png') }}">
                 PT. TIRTA ASASTA
             </a>
             {{-- <div class="flex items-center">
@@ -17,31 +17,31 @@
 
         {{-- waves --}}
         <img id="wave2" src="{{ asset('assets/img/wave2.png') }}" alt="wave2"
-            class="absolute h-[105%] w-[200%] -top-[105%] right-0 object-fill max-w-[200%] -z-10"
+            class="absolute h-[105%] w-[400%] max-w-[400%] lg:w-[200%] -top-[105%] right-0 lg:max-w-[200%] -z-10 object-cover"
             style="transition: all 3s linear;">
         <img id="wave1" src="{{ asset('assets/img/wave1.png') }}" alt="wave1"
-            class="absolute h-[105%] w-[200%] -top-[105%] left-0 object-fill max-w-[200%] -z-10"
+            class="absolute h-[105%] w-[400%] max-w-[400%] lg:w-[200%] -top-[105%] left-0 lg:max-w-[200%] -z-10 object-cover"
             style="transition: all 3s linear;">
 
         {{-- blobs --}}
         <img src="{{ asset('assets/img/blob1.svg') }}" alt="blob 1" id="blob1"
-            class="-left-full top-0 -translate-y-1/2 w-1/2 rotate-[30deg]">
+            class="-left-full top-0 -translate-y-1/2 w-full lg:w-1/2 rotate-[30deg]">
         <img src="{{ asset('assets/img/blob2.svg') }}" alt="blob 2" id="blob2" class="-top-full -right-full w-1/2">
         <img src="{{ asset('assets/img/blob3.svg') }}" alt="blob 3" id="blob3"
-            class="top-0 -translate-y-1/2 -right-full w-80 rotate-12">
+            class="top-0 -translate-y-1/2 -right-full w-full lg:w-80 rotate-12">
 
         <div class="pt-28">
             <div class="w-full flex justify-center">
                 <img id="banner" src="{{ asset('assets/img/banner.png') }}" alt="banner"
-                    class="w-4/5 opacity-0 transition duration-1000">
+                    class="w-[80%] opacity-0 transition duration-1000 xl:w-3/5">
             </div>
-            <p class="mt-16 text-white text-center max-w-[75%] mx-auto text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, nesciunt molestias. Eaque corrupti
-                voluptatibus inventore quidem quibusdam rerum quo modi. Obcaecati fugiat soluta libero quis eveniet minima
-                magnam cupiditate veritatis!
-            </p>
+            <p class="mt-8 lg:mt-16 text-white text-center max-w-[75%] mx-auto text-base">
+                Ikuti keseruan Tirta Asasta Fun Walk 2024, pada Minggu, 8 September 2024. Dimeriahkan dengan penampilan Band dan Doorprize menarik! <br>Terbatas untuk 1000 orang. yuk daftar sekarang!<br><br>
+                Periode Pendaftaran Peserta Fun Walk:<br>
+                Pelanggan: <b>26 Agustus 2024</b> dan Umum: <b>28 Agustus 2024</b>.<br>
+                <b>PENDAFTARAN DITUTUP hari Minggu, 1 September 2024.</b></p>
             <div id="bannerAction" class="flex justify-center mt-12 opacity-0 transition-opacity !duration-1000">
-                <button data-target-modal="#parentModal"
+                <button data-target-modal="#customerModal"
                     class="modal-btn py-2 px-20 bg-pdam-green text-white rounded-lg text-2xl shadow-lg transition duration-300 hover:bg-pdam-dark-green hover:font-bold hover:shadow-2xl">IKUT
                     FUNWALK!</button>
             </div>
@@ -87,9 +87,9 @@
         </div>
 
         {{-- customer modal --}}
-        <div id="customerModal" class="modal p-12 w-1/2 max-w-full">
-            <h3 class="mb-12 font-medium text-3xl">Registrasi Pelanggan</h3>
-            <form id="customerForm" action="" method="POST" class="grid grid-cols-1 gap-y-6">
+        <div id="customerModal" class="modal p-4 lg:p-12 w-full lg:w-1/2 max-w-full">
+            <h3 class="mb-6 lg:mb-12 font-medium text-2xl lg:text-3xl">Registrasi Peserta</h3>
+            <form id="customerForm" action="" method="POST" class="grid grid-cols-1 gap-y-3 lg:gap-y-6">
                 @method('POST')
                 @csrf
                 <input type="hidden" name="type" value="customer">
@@ -128,8 +128,15 @@
                             Telpon</label>
                     </div>
                 </div>
-                <div class="flex justify-between items-start px-10">
-                    <p class="text-lg font-medium">Ukuran Baju :</p>
+
+                <div class="relative form-control">
+                    <input type="text" name="instagram" id="customer-instagram"
+                        class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
+                    <label for="customer-instagram"
+                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Instagram</label>
+                </div>
+                <div class="flex justify-between items-start px-4 lg:px-10">
+                    <p class="lg:text-lg font-medium">Ukuran Baju :</p>
                     {{-- radio input --}}
                     <div class="flex gap-x-2">
                         @foreach ($shirt_stock as $shirt)
@@ -137,33 +144,47 @@
                                 <input type="radio" name="shirt_stock_id" id="customer-size-{{$shirt->id}}" value="{{$shirt->id}}" class="peer hidden"
                                 data-stock-info="{{$shirt->stock}}">
                                 <label for="customer-size-{{$shirt->id}}"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{$shirt->size}}</label>
+                                class="py-2 px-3 lg:py-2 lg:px-4 font-bold text-[#656565] rounded-lg text-lg lg:text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{$shirt->size}}</label>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 <p id="stockInfo" class="text-[#B0B0B0] text-right mx-10 hidden"></p>
+                <small class="text-xs text-[#B0B0B0]">* Satu ID Pelanggan akan mendapatkan satu Fun Walk Kit yang berisi 1 Baju, 1 Tas, 1 Tumbler dan 1 Snack</small>
                 <button type="button" onclick="openChildModal()"
-                    class="block w-full py-3 bg-[#cdcdcd] text-[#656565] text-lg rounded-2xl font-semibold transition-all shadow hover:bg-[#6c6c6c] hover:text-white mt-6">
+                    class="block w-full py-3 bg-[#cdcdcd] text-[#656565] text-lg rounded-2xl font-semibold transition-all shadow hover:bg-[#6c6c6c] hover:text-white mt-3 lg:mt-6">
                     Tambah Peserta
                 </button>
                 <button type="submit"
                     class="block w-full py-3 bg-pdam-blue text-white text-lg rounded-2xl font-semibold transition-all shadow hover:bg-pdam-dark-blue">
-                    Kirim Jawaban!
+                    Submit
                 </button>
 
                 {{-- modal form additional participant --}}
                 <div class="absolute z-50 h-full w-full top-0 left-0 child-modal-overlay hidden">
-                    <div class="child-modal w-full p-12 flex flex-col gap-y-6 absolute rounded-lg top-[150%] left-1/2 -translate-x-1/2 bg-white shadow-lg"
+                    <div class="child-modal w-full p-4 lg:p-12 flex flex-col gap-y-6 absolute rounded-lg top-[150%] left-1/2 -translate-x-1/2 bg-white shadow-lg"
                         style="transition: all .3s linear">
-                        <h3 class="mb-6 font-medium text-3xl">Tambah Peserta</h3>
-                        <div id="formWrapper" class="flex flex-col gap-y-6">
-                            <div class="relative form-control">
-                                <input id="additionalName1" type="text" name="additional_participant[]"
-                                    class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                                <label for="additionalName1"
+                        <h3 class="mb-4 lg:mb-6 font-medium text-2xl lg:text-3xl">Tambah Pendamping</h3>
+                        <div id="formWrapper" class="flex flex-col gap-y-3 lg:gap-y-6">
+                            <div class="grid grid-cols-3 gap-x-2 w-full">
+                                <div class="relative form-control col-span-2">
+                                    <input type="text" name="additional_participant[0][name]" id="additionalName1"
+                                        class="additional-name peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
+                                    <label for="additionalName1"
                                     class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nama
                                     Lengkap</label>
+                                </div>
+                                <div class="relative form-control col-span-1">
+                                    <select name="additional_participant[0][relation]" id="additionalRelation1" class="additional-relation py-2 lg:py-3 px-6 lg:text-lg font-semibold bg-transparent border-2 rounded-3xl border-[#aeaeae] appearance-none text-[#aeaeae] w-full focus:border-pdam-blue focus:outline-none focus:ring-0">
+                                        <option value="" selected disabled>Hubungan</option>
+                                        <option value="suami">Suami</option>
+                                        <option value="istri">Istri</option>
+                                        <option value="anak">Anak</option>
+                                        <option value="adik">Adik</option>
+                                        <option value="kakak">Kakak</option>
+                                        <option value="saudara">Saudara</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <button id="addParticipantInputBtn" type="button"
@@ -219,6 +240,12 @@
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nomor
                         Telpon</label>
                 </div>
+                <div class="relative form-control">
+                    <input type="text" name="instagram" id="public-instagram"
+                        class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
+                    <label for="public-instagram"
+                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Instagram</label>
+                </div>
                 <div class="flex justify-between items-start px-10">
                     <p class="text-lg font-medium">Ukuran Baju :</p>
                     {{-- radio input --}}
@@ -264,8 +291,10 @@
             const blob2 = document.getElementById('blob2');
             const blob3 = document.getElementById('blob3');
 
-            wave1.classList.replace('left-0', '-left-full');
-            wave2.classList.replace('right-0', '-right-full');
+            wave1.classList.replace('left-0', 'lg:-left-full');
+            wave2.classList.replace('right-0', 'lg:-right-full');
+            wave1.classList.add('-left-[200%]');
+            wave2.classList.add('-right-[200%]');
             wave1.classList.replace('-top-[105%]', 'top-0');
             wave2.classList.replace('-top-[105%]', 'top-0');
             setTimeout(() => {
@@ -366,7 +395,14 @@
                 // reset input value
                 lastChild.querySelector('input').value = '';
                 lastChild.querySelector('input').id = 'additionalName1';
+                lastChild.querySelector('input').name = 'additional_participant[0][name]';
+
                 lastChild.querySelector('label').htmlFor = 'additionalName1';
+
+                lastChild.querySelector('select').value = '';
+                lastChild.querySelector('select').id = 'additionalRelation1';
+                lastChild.querySelector('select').name = 'additional_participant[0][relation]';
+
                 // remove all child
                 wrapper.innerHTML = '';
                 // append last child
@@ -380,10 +416,10 @@
                 const parent = addParticipantInputBtn.parentElement.querySelector('#formWrapper');
 
                 // max 3 additional participant
-                if (parent.children.length == 3) {
+                if (parent.children.length == 2) {
                     Swal.fire({
                         title: 'Maaf...',
-                        text: 'Maksimal 3 peserta tambahan',
+                        text: 'Maksimal 2 peserta tambahan',
                         icon: 'error',
                         confirmButtonText: 'Kembali'
                     })
@@ -397,7 +433,13 @@
                 // reset input value
                 clone.querySelector('input').value = '';
                 clone.querySelector('input').id = `additionalName${parent.children.length+1}`;
+                clone.querySelector('input').name = `additional_participant[${parent.children.length+1}][name]`;
+
                 clone.querySelector('label').htmlFor = `additionalName${parent.children.length+1}`;
+                
+                clone.querySelector('select').value = '';
+                clone.querySelector('select').id = `additionalRelation${parent.children.length+1}`;
+                clone.querySelector('select').name = `additional_participant[${parent.children.length+1}][relation]`;
                 // append to parent
                 parent.appendChild(clone);
             });
@@ -467,8 +509,10 @@
             const form = e.target;
             const formData = new FormData(form);
             if (!hasAdditionalParticipant) {
-                formData.delete('additional_participant[]');
+                formData.delete('additional_participant[0][name]');
+                formData.delete('additional_participant[0][relation]');
             }
+            console.log(formData.getAll('additional_participant[][name]'));
             const value = Object.fromEntries(formData.entries());
             Swal.fire({
                 title: "Apakah data yang anda masukkan sudah benar?",
@@ -515,8 +559,10 @@
                             text: 'hallo, terimakasih telah mendaftar!. silahkan lakukan verifikasi email, dengan cara klik link yang dikirim ke ' + formData.get('email'),
                             icon: 'success',
                             confirmButtonText: 'Kembali'
-                        }).then(() => {
-                            window.location.reload();
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
                         });
                     }
 

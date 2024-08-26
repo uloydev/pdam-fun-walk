@@ -33,6 +33,7 @@ class ParticipantController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->validate([
             'type' => 'required|string|in:public,customer',
             'name' => 'required|string|max:100',
@@ -40,9 +41,11 @@ class ParticipantController extends Controller
             'phone' => 'required|string|max:20',
             'nik' => 'required|string|min:16|max:20|unique:participants,nik',
             'customer_code' => 'required_if:type,customer|string|max:50|exists:customers,customer_code|unique:participants,customer_code',
-            'additional_participant' => 'array|nullable|max:3',
-            'additional_participant.*' => 'required|string|max:100',
+            'additional_participant' => 'array|nullable|max:2',
+            'additional_participant.*.name' => 'required|string|max:100',
+            'additional_participant.*.relation' => 'required|string|max:100|in:suami,istri,anak,adik,kakak,saudara',
             'shirt_stock_id' => 'required|exists:shirt_stocks,id',
+            'instagram' => 'required|string|max:200',
         ], [
             'name.required' => 'Harap masukkan nama',
             'name.max' => 'Nama maksimal 100 karakter',
@@ -60,11 +63,16 @@ class ParticipantController extends Controller
             'customer_code.exists' => 'Nomor Pelanggan PDAM tidak valid',
             'customer_code.unique' => 'Nomor Pelanggan PDAM sudah pernah terdaftar sebagai peserta',
             'customer_code.required_if' => 'Nomor Pelanggan PDAM harus diisi',
-            'additional_participant.max' => 'Maksimal 3 peserta tambahan',
-            'additional_participant.*.required' => 'Nama peserta tambahan harus diisi',
-            'additional_participant.*.max' => 'Nama peserta tambahan maksimal 100 karakter',
+            'additional_participant.max' => 'Maksimal 2 peserta tambahan',
+            'additional_participant.*.name.required' => 'Nama peserta tambahan harus diisi',
+            'additional_participant.*.name.max' => 'Nama peserta tambahan maksimal 100 karakter',
+            'additional_participant.*.relation.required' => 'Hubungan peserta tambahan harus diisi',
+            'additional_participant.*.relation.max' => 'Hubungan peserta tambahan maksimal 100 karakter',
+            'additional_participant.*.relation.in' => 'Hubungan peserta tambahan tidak valid',
             'shirt_stock_id.required' => 'Harap pilih ukuran baju',
             'shirt_stock_id.exists' => 'Ukuran baju tidak tersedia',
+            'instagram.required' => 'Harap masukkan username Instagram',
+            'instagram.max' => 'Username Instagram maksimal 200 karakter',
         ]);
 
         // token with uuid
@@ -92,9 +100,12 @@ class ParticipantController extends Controller
 
         // create participant
         $participant = Participant::create($data);
+        
+        $link = route('participant.verify') . '?token=' . $participant->token;
+
 
         // send email
-        Mail::to($participant->email)->send(new ParticipantVerification($participant));
+        Mail::to($participant->email)->send(new ParticipantVerification($participant, $link));
 
         return response()->json([
             'message' => 'Participant created successfully',
