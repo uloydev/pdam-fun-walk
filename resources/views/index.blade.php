@@ -89,7 +89,7 @@
         {{-- customer modal --}}
         <div id="customerModal" class="modal p-4 lg:p-12 w-full lg:w-1/2 max-w-full">
             <h3 class="mb-6 lg:mb-12 font-medium text-2xl lg:text-3xl">Registrasi Peserta</h3>
-            <form id="customerForm" action="" method="POST" class="grid grid-cols-1 gap-y-3 lg:gap-y-6">
+            <form id="customerForm" action="" method="POST" class="grid grid-cols-1 gap-y-3 lg:gap-y-4">
                 @method('POST')
                 @csrf
                 <input type="hidden" name="type" value="customer">
@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <p id="stockInfo" class="text-[#B0B0B0] text-right mx-10 hidden"></p>
-                <small class="text-xs text-[#B0B0B0]">* Satu ID Pelanggan akan mendapatkan satu Fun Walk Kit yang berisi 1 Baju, 1 Tas, 1 Tumbler dan 1 Snack</small>
+                <small class="text-xs lg:text-sm text-[#B0B0B0]">* Satu ID Pelanggan akan mendapatkan satu Fun Walk Kit yang berisi 1 Baju, 1 Tas, 1 Tumbler dan 1 Snack</small>
                 <button type="button" onclick="openChildModal()"
                     class="block w-full py-3 bg-[#cdcdcd] text-[#656565] text-lg rounded-2xl font-semibold transition-all shadow hover:bg-[#6c6c6c] hover:text-white mt-3 lg:mt-6">
                     Tambah Peserta
@@ -162,7 +162,7 @@
 
                 {{-- modal form additional participant --}}
                 <div class="absolute z-50 h-full w-full top-0 left-0 child-modal-overlay hidden">
-                    <div class="child-modal w-full p-4 lg:p-12 flex flex-col gap-y-6 absolute rounded-lg top-[150%] left-1/2 -translate-x-1/2 bg-white shadow-lg"
+                    <div class="child-modal w-full p-4 lg:p-12 flex flex-col gap-y-3 lg:gap-y-4 absolute rounded-lg top-[150%] left-1/2 -translate-x-1/2 bg-white shadow-lg"
                         style="transition: all .3s linear">
                         <h3 class="mb-4 lg:mb-6 font-medium text-2xl lg:text-3xl">Tambah Pendamping</h3>
                         <div id="formWrapper" class="flex flex-col gap-y-3 lg:gap-y-6">
