@@ -36,14 +36,14 @@
                     class="w-[80%] opacity-0 transition duration-1000 xl:w-3/5">
             </div>
             <p class="mt-8 lg:mt-16 text-white text-center max-w-[75%] mx-auto text-base">
-                Ikuti keseruan Tirta Asasta Fun Walk 2024, pada Minggu, 8 September 2024.<br>Dimeriahkan dengan penampilan Band dan Doorprize menarik! <br>Terbatas untuk 1000 orang, yuk daftar sekarang!<br><br>
+                Ikuti keseruan Tirta Asasta Fun Walk 2024, pada <b>Minggu, 8 September 2024.</b><br>Dimeriahkan dengan penampilan Band dan Doorprize menarik! <br>Terbatas untuk 1.000 orang, yuk daftar sekarang!<br><br>
                 Periode Pendaftaran Peserta Fun Walk:<br>
                 Pelanggan: <b>Selasa, 27 Agustus 2024</b> dan Umum: <b>Rabu, 28 Agustus 2024</b>.<br>
                 <b>PENDAFTARAN DITUTUP hari Minggu, 1 September 2024.</b></p>
             <div id="bannerAction" class="flex justify-center mt-12 opacity-0 transition-opacity !duration-1000">
                 <button data-target-modal="#customerModal"
                     class="modal-btn py-2 px-20 bg-pdam-green text-white rounded-lg text-2xl shadow-lg transition duration-300 hover:bg-pdam-dark-green hover:font-bold hover:shadow-2xl">IKUT
-                    FUNWALK!</button>
+                    FUN WALK!</button>
             </div>
         </div>
     </div>
@@ -555,8 +555,8 @@
                     } else {
                         closeAllModal();
                         Swal.fire({
-                            title: 'Verifikasi email anda',
-                            html: `<p>Hallo, Terimakasih telah mendaftar.</p><p>Silahkan lakukan verifikasi dengan klik link yang telah dikirimkan melalui email  ${formData.get('email')}`,
+                            title: 'Verifikasi email Anda',
+                            html: `<p>Hallo, Terima kasih telah mendaftar.</p><p>Silahkan lakukan verifikasi dengan klik link yang telah dikirimkan melalui email  ${formData.get('email')}`,
                             icon: 'success',
                             confirmButtonText: 'Kembali'
                         }).then((result) => {

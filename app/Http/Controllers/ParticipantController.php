@@ -173,8 +173,8 @@ class ParticipantController extends Controller
         Mail::to($participant->email)->send(new ParticipantVerified($participant, $shirtStock));
 
         return redirect()->route('index')->with('alert', [
-            "title" => 'Terimakasih!',
-            "html" => '<p>Data peserta berhasil diverifikasi</p><p>Silahkan check email untuk bukti registrasi</p>',
+            "title" => 'Terima kasih!',
+            "html" => '<p>Data peserta berhasil diverifikasi.</p><p>Silahkan cek email untuk bukti registrasi Anda.</p>',
             "icon" => 'success',
             "confirmButtonText" => 'Kembali'
         ]);
