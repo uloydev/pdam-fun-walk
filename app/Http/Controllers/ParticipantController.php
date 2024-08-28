@@ -40,7 +40,7 @@ class ParticipantController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100|unique:participants,email',
             'phone' => 'required|string|max:20',
-            'nik' => 'required|string|min:16|max:20|unique:participants,nik',
+            'nik' => 'required|string|min:16|max:16|unique:participants,nik',
             'customer_code' => 'required_if:type,customer|string|max:50|exists:customers,customer_code|unique:participants,customer_code',
             'additional_participant' => 'array|nullable|max:2',
             'additional_participant.*.name' => 'required|string|max:100',
@@ -58,7 +58,7 @@ class ParticipantController extends Controller
             'phone.max' => 'Nomor telepon maksimal 20 karakter',
             'nik.required' => 'Harap masukkan NIK',
             'nik.min' => 'NIK minimal 16 karakter',
-            'nik.max' => 'NIK maksimal 20 karakter',
+            'nik.max' => 'NIK maksimal 16 karakter',
             'nik.unique' => 'NIK sudah terdaftar sebagai peserta',
             'customer_code.max' => 'Nomor Pelanggan PDAM maksimal 50 karakter',
             'customer_code.exists' => 'Nomor Pelanggan PDAM tidak valid',
@@ -96,6 +96,13 @@ class ParticipantController extends Controller
                     'shirt_stock_id' => ['Ukuran baju ' . $shirtStock->size . ' sudah habis'],
                 ],
                 'message' => 'Ukuran baju tidak tersedia',
+            ], 400);
+        } else if ($shirtStock->type !== $data['type']) {
+            return response()->json([
+                'errors' => [
+                    'shirt_stock_id' => ['Ukuran baju ' . $shirtStock->size . ' tidak valid'],
+                ],
+                'message' => 'Ukuran baju tidak valid',
             ], 400);
         }
 
@@ -169,7 +176,7 @@ class ParticipantController extends Controller
         $participant->email_verified_at = now();
         $participant->save();
 
-        $participant->shirtStock->decrement('stock');
+        $shirtStock->decrement('stock');
         Mail::to($participant->email)->send(new ParticipantVerified($participant, $shirtStock));
 
         return redirect()->route('index')->with('alert', [

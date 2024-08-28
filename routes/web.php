@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index', [
-        'shirt_stock' => ShirtStock::all(),
+        'shirt_stock' => ShirtStock::where('stock', '>', 0)->get(),
     ]);
 })->name('index');
 

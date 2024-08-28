@@ -36,12 +36,14 @@
                     class="w-[80%] opacity-0 transition duration-1000 xl:w-3/5">
             </div>
             <p class="mt-8 lg:mt-16 text-white text-center max-w-[75%] mx-auto text-base">
-                Ikuti keseruan Tirta Asasta Fun Walk 2024, pada <b>Minggu, 8 September 2024.</b><br>Dimeriahkan dengan penampilan Band dan Doorprize menarik! <br>Terbatas untuk 1.000 orang, yuk daftar sekarang!<br><br>
+                Ikuti keseruan Tirta Asasta Fun Walk 2024, pada <b>Minggu, 8 September 2024.</b><br>Dimeriahkan dengan
+                penampilan Band dan Doorprize menarik! <br>Terbatas untuk 1.000 orang, yuk daftar sekarang!<br><br>
                 Periode Pendaftaran Peserta Fun Walk:<br>
                 Pelanggan: <b>Selasa, 27 Agustus 2024</b> dan Umum: <b>Rabu, 28 Agustus 2024</b>.<br>
-                <b>PENDAFTARAN DITUTUP hari Minggu, 1 September 2024.</b></p>
+                <b>PENDAFTARAN DITUTUP hari Minggu, 1 September 2024.</b>
+            </p>
             <div id="bannerAction" class="flex justify-center mt-12 opacity-0 transition-opacity !duration-1000">
-                <button data-target-modal="#customerModal"
+                <button data-target-modal="#parentModal"
                     class="modal-btn py-2 px-20 bg-pdam-green text-white rounded-lg text-2xl shadow-lg transition duration-300 hover:bg-pdam-dark-green hover:font-bold hover:shadow-2xl">IKUT
                     FUN WALK!</button>
             </div>
@@ -77,13 +79,12 @@
 
     <div id="modalOverlay" class="fixed h-screen w-full top-0 left-0 overflow-hidden hidden">
         {{-- parent modal --}}
-        <div id="parentModal" class="modal max-h-1/2 max-w-2/3 p-12 flex flex-col gap-y-6">
+        <div id="parentModal" class="modal max-h-1/2 max-w-2/3 p-4 lg:p-12 flex flex-col gap-y-3 lg:gap-y-4">
             <button data-target-modal="#customerModal"
                 class="modal-btn inline-block py-4 w-96 max-w-full bg-pdam-blue text-white text-lg rounded-lg font-semibold transition-all shadow hover:bg-pdam-dark-blue">Saya
-                Pelanggan PDAM</button>
-            <button data-target-modal="#publicModal"
-                class="modal-btn inline-block py-4 w-96 max-w-full bg-[#CDCDCD] text-[#656565] text-lg rounded-lg font-semibold transition-all shadow hover:bg-[#B0B0B0] hover:text-[#3D3D3D]">Saya
-                Bukan Pelanggan PDAM</button>
+                Pelanggan Tirta Asasta</button>
+            <button type="button" onclick="closedModal()"
+                class="inline-block py-4 w-96 max-w-full bg-[#CDCDCD] text-[#656565] text-lg rounded-lg font-semibold transition-all shadow hover:bg-[#B0B0B0] hover:text-[#3D3D3D]">Non Pelanggan Tirta Asasta</button>
         </div>
 
         {{-- customer modal --}}
@@ -113,19 +114,25 @@
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">NIK</label>
                 </div>
                 <div class="grid grid-cols-2 gap-x-2 w-full">
-                    <div class="relative form-control col-span-1">
-                        <input type="text" name="customer_code" id="customer-customerID"
-                            class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                        <label for="customer-customerID"
-                            class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">ID
-                            Pelanggan</label>
+                    <div>
+
+                        <div class="relative form-control col-span-1">
+                            <input type="text" name="customer_code" id="customer-customerID"
+                                class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
+                            <label for="customer-customerID"
+                                class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">ID
+                                Pelanggan</label>
+                        </div>
+                        <p class="px-4 pt-1 text-xs lg:text-sm text-[#B0B0B0]">Contoh: 01000101</p>
                     </div>
-                    <div class="relative form-control col-span-1">
-                        <input type="text" name="phone" id="customer-phone"
+                    <div>
+                        <div class="relative form-control col-span-1">
+                            <input type="text" name="phone" id="customer-phone"
                             class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                        <label for="customer-phone"
+                            <label for="customer-phone"
                             class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nomor
                             Telpon</label>
+                        </div>
                     </div>
                 </div>
 
@@ -139,18 +146,20 @@
                     <p class="lg:text-lg font-medium">Ukuran Baju :</p>
                     {{-- radio input --}}
                     <div class="flex gap-x-2">
-                        @foreach ($shirt_stock as $shirt)
+                        @foreach ($shirt_stock->where('type', 'customer') as $shirt)
                             <div>
-                                <input type="radio" name="shirt_stock_id" id="customer-size-{{$shirt->id}}" value="{{$shirt->id}}" class="peer hidden"
-                                data-stock-info="{{$shirt->stock}}">
-                                <label for="customer-size-{{$shirt->id}}"
-                                class="py-2 px-3 lg:py-2 lg:px-4 font-bold text-[#656565] rounded-lg text-lg lg:text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{$shirt->size}}</label>
+                                <input type="radio" name="shirt_stock_id" id="customer-size-{{ $shirt->id }}"
+                                    value="{{ $shirt->id }}" class="peer hidden"
+                                    data-stock-info="{{ $shirt->stock }}">
+                                <label for="customer-size-{{ $shirt->id }}"
+                                    class="py-2 px-3 lg:py-2 lg:px-4 font-bold text-[#656565] rounded-lg text-lg lg:text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{ $shirt->size }}</label>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 <p id="stockInfo" class="text-[#B0B0B0] text-right mx-10 hidden"></p>
-                <small class="text-xs lg:text-sm text-[#B0B0B0]">* Satu ID pelanggan akan mendapatkan satu Fun Walk Kit yang berisi 1 baju, 1 tas, 1 tumbler, dan 1 snack.</small>
+                <small class="text-xs lg:text-sm text-[#B0B0B0]">* Satu ID pelanggan akan mendapatkan satu Fun Walk Kit
+                    yang berisi 1 baju, 1 tas, 1 tumbler, dan 1 snack.</small>
                 <button type="button" onclick="openChildModal()"
                     class="block w-full py-3 bg-[#cdcdcd] text-[#656565] text-lg rounded-2xl font-semibold transition-all shadow hover:bg-[#6c6c6c] hover:text-white mt-3 lg:mt-6">
                     Tambah Pendamping
@@ -169,13 +178,15 @@
                             <div class="grid grid-cols-3 gap-x-2 w-full">
                                 <div class="relative form-control col-span-2">
                                     <input type="text" name="additional_participant[0][name]" id="additionalName1"
-                                        class="additional-name peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
+                                        class="additional-name peer focus:border-pdam-blue focus:outline-none focus:ring-0"
+                                        placeholder="">
                                     <label for="additionalName1"
-                                    class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nama
-                                    Lengkap</label>
+                                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nama
+                                        Lengkap</label>
                                 </div>
                                 <div class="relative form-control col-span-1">
-                                    <select name="additional_participant[0][relation]" id="additionalRelation1" class="additional-relation py-2 lg:py-3 px-6 lg:text-lg font-semibold bg-transparent border-2 rounded-3xl border-[#aeaeae] appearance-none text-[#aeaeae] w-full focus:border-pdam-blue focus:outline-none focus:ring-0">
+                                    <select name="additional_participant[0][relation]" id="additionalRelation1"
+                                        class="additional-relation py-2 lg:py-3 px-6 lg:text-lg font-semibold bg-transparent border-2 rounded-3xl border-[#aeaeae] appearance-none text-[#aeaeae] w-full focus:border-pdam-blue focus:outline-none focus:ring-0">
                                         <option value="" selected disabled>Hubungan</option>
                                         <option value="suami">Suami</option>
                                         <option value="istri">Istri</option>
@@ -208,9 +219,9 @@
         </div>
 
         {{-- public modal --}}
-        <div id="publicModal" class="modal p-12 w-1/2 max-w-full">
-            <h3 class="mb-12 font-medium text-3xl">Registrasi Non Pelanggan</h3>
-            <form id="publicForm" action="" method="POST" class="grid grid-cols-1 gap-y-6">
+        <div id="publicModal" class="modal p-4 lg:p-12 w-full lg:w-1/2 max-w-full">
+            <h3 class="mb-6 lg:mb-12 font-medium text-2xl lg:text-3xl">Registrasi Non Pelanggan</h3>
+            <form id="publicForm" action="" method="POST" class="grid grid-cols-1 gap-y-3 lg:gap-y-4">
                 @method('POST')
                 @csrf
                 <input type="hidden" name="type" value="public">
@@ -222,16 +233,16 @@
                         Lengkap</label>
                 </div>
                 <div class="relative form-control">
-                    <input type="text" name="nik" id="public-ktp"
-                        class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
-                    <label for="public-ktp"
-                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">NIK</label>
-                </div>
-                <div class="relative form-control">
                     <input type="email" name="email" id="public-email"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
                     <label for="public-email"
                         class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Email</label>
+                </div>
+                <div class="relative form-control">
+                    <input type="text" name="nik" id="public-ktp"
+                        class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
+                    <label for="public-ktp"
+                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">NIK</label>
                 </div>
                 <div class="relative form-control">
                     <input type="text" name="phone" id="public-phone"
@@ -244,26 +255,29 @@
                     <input type="text" name="instagram" id="public-instagram"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
                     <label for="public-instagram"
-                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Instagram</label>
+                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Instagram Username</label>
                 </div>
-                <div class="flex justify-between items-start px-10">
-                    <p class="text-lg font-medium">Ukuran Baju :</p>
+                <div class="flex justify-between items-start px-4 lg:px-10">
+                    <p class="lg:text-lg font-medium">Ukuran Baju :</p>
                     {{-- radio input --}}
                     <div class="flex gap-x-2">
-                        @foreach ($shirt_stock as $shirt)
+                        @foreach ($shirt_stock->where('type', 'public') as $shirt)
                             <div>
-                                <input type="radio" name="shirt_stock_id" id="public-size-{{$shirt->id}}" value="{{$shirt->id}}" class="peer hidden"
-                                data-stock-info="{{$shirt->stock}}">
-                                <label for="public-size-{{$shirt->id}}"
-                                class="py-2 px-4 font-bold text-[#656565] rounded-lg text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{$shirt->size}}</label>
+                                <input type="radio" name="shirt_stock_id" id="public-size-{{ $shirt->id }}"
+                                    value="{{ $shirt->id }}" class="peer hidden"
+                                    data-stock-info="{{ $shirt->stock }}">
+                                <label for="public-size-{{ $shirt->id }}"
+                                    class="py-2 px-3 lg:px-4 font-bold text-[#656565] rounded-lg text-xl lg:text-2xl peer-checked:bg-pdam-blue peer-checked:text-white">{{ $shirt->size }}</label>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 <p id="stockInfo" class="text-[#B0B0B0] text-right mx-10 hidden"></p>
+                <small class="text-xs lg:text-sm text-[#B0B0B0]">* Partisipan akan mendapatkan satu Fun Walk Kit
+                    yang berisi 1 baju, 1 tas dan 1 snack.</small>
                 <button type="submit"
                     class="block w-full py-3 bg-pdam-blue text-white text-lg rounded-2xl font-semibold transition-all shadow hover:bg-pdam-dark-blue mt-6">
-                    Kirim Jawaban!
+                    Submit
                 </button>
             </form>
         </div>
@@ -433,13 +447,15 @@
                 // reset input value
                 clone.querySelector('input').value = '';
                 clone.querySelector('input').id = `additionalName${parent.children.length+1}`;
-                clone.querySelector('input').name = `additional_participant[${parent.children.length}][name]`;
+                clone.querySelector('input').name =
+                    `additional_participant[${parent.children.length}][name]`;
 
                 clone.querySelector('label').htmlFor = `additionalName${parent.children.length+1}`;
-                
+
                 clone.querySelector('select').value = '';
                 clone.querySelector('select').id = `additionalRelation${parent.children.length+1}`;
-                clone.querySelector('select').name = `additional_participant[${parent.children.length}][relation]`;
+                clone.querySelector('select').name =
+                    `additional_participant[${parent.children.length}][relation]`;
                 // append to parent
                 parent.appendChild(clone);
             });
@@ -569,6 +585,15 @@
                 }
             });
 
+        }
+
+        const closedModal = () => {
+            Swal.fire({
+                title: 'Maaf!',
+                html: '<p>Kuota sudah full</p><p>Sampai Jumpa di Event lainnya!</p>',
+                icon: 'error',
+                confirmButtonText: 'Kembali'
+            });
         }
     </script>
 @endpush
