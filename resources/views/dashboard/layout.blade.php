@@ -74,9 +74,12 @@
             </ul>
         </div>
         <div class="px-4">
-            <p class="text-center text-lg font-semibold">Hi, admin@mail.com</p>
-            <button type="button"
-                class="w-full block px-6 py-2 font-bold text-center bg-gradient-to-tl from-slate-600 to-slate-300 dark:from-slate-900 dark:to-slate-600 uppercase align-middle transition-all rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md text-white">Logout</button>
+            <p class="text-center text-lg font-semibold">Hi, {{ auth()->user()->email }}</p>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="w-full block px-6 py-2 font-bold text-center bg-gradient-to-tl from-slate-600 to-slate-300 dark:from-slate-900 dark:to-slate-600 uppercase align-middle transition-all rounded-lg cursor-pointer leading-normal text-xs ease-in tracking-tight-rem shadow-xs bg-150 bg-x-25 hover:-translate-y-px active:opacity-85 hover:shadow-md text-white">Logout</button>
+            </form>
 
             <div class="rounded-xl bg-gradient-to-tl to-blue-400 from-violet-500 mt-4 p-4">
                 <div class="min-h-6 mb-0.5 flex items-center justify-center">
