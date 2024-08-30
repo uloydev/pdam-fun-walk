@@ -9,5 +9,5 @@
     <button id="searchBtn" type="button"
         class="px-6 py-2 rounded-lg bg-gradient-to-tl to-blue-400 from-violet-500 text-white font-semibold mr-3 hover:from-violet-700 hover:to-blue-600 transition-all hover:shadow-lg">Search</button>
     <button id="resetFilterBtn" type="button"
-        class="px-6 py-2 rounded-lg bg-gradient-to-tl from-slate-700 to-gray-700 text-white font-semibold hover:from-slate-800 hover:to-gray-800 transition-all hover:shadow-lg">Reset Filter</button>
+        class="px-6 py-2 rounded-lg bg-gradient-to-tl to-slate-700 from-gray-700 text-white font-semibold hover:to-slate-800 hover:from-gray-800 transition-all hover:shadow-lg">Reset Filter</button>
 </div>

@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // redirect to the url with the new per_page value based on current url
             const params = getQueryParams();
             params.set('per_page', this.value);
+            params.delete('page');
             refreshWithParams(params);
 
         });
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     searchBtn.addEventListener('click', function () {
         const params = getQueryParams();
         params.set('search', searchInput.value);
+        params.delete('page');
         refreshWithParams(params);
     });
 
@@ -82,4 +84,11 @@ const getQueryParams = () => {
 
 const refreshWithParams = (params) => {
     window.location.href = `${window.location.pathname}?${params.toString()}`;
+}
+
+const clearQueryParams = (params) => {
+    params.delete('search');
+    params.delete('sortBy');
+    params.delete('sortType');
+    params.delete('per_page');
 }
