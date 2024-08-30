@@ -9,11 +9,11 @@
 
 
 table th.active {
-    @apply text-slate-700
+    @apply text-violet-700 dark:text-violet-300;
 }
 
 table th.sortable {
-    @apply cursor-pointer hover:text-slate-700 hover:dark:text-slate-100 select-none;
+    @apply cursor-pointer hover:text-violet-700 hover:dark:text-violet-300 select-none;
 }
 
 table th .direction.active {

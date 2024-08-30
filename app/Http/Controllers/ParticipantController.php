@@ -16,9 +16,55 @@ class ParticipantController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $pagination = $req->validate([
+            'page' => 'nullable|integer|min:1',
+            'per_page' => 'nullable|integer|min:1',
+            'sortBy' => 'nullable|string|in:id,name,email,phone,nik,customer_code',
+            'sortType' => 'nullable|string|in:asc,desc',
+            'search' => 'nullable|string',
+        ]);
+
+        $pagination['page'] = $pagination['page'] ?? 1;
+        $pagination['per_page'] = $pagination['per_page'] ?? 10;
+
+        $query = Participant::with('shirtStock');
+        if (isset($pagination['search']) && $pagination['search']) {
+            $query->where('email', 'like', "%{$pagination['search']}%")
+            ->orWhere('nik', 'like', "%{$pagination['search']}%")
+            ->orWhere('customer_code', 'like', "%{$pagination['search']}%");
+        } else {
+            $pagination['search'] = '';
+        }
+        $numSearch = (int) $pagination['search'];
+        if ($numSearch) {
+            $query->orWhere('id', $numSearch);
+        }
+
+        if (isset($pagination['sortBy']) && $pagination['sortBy']) {
+            if (isset($pagination['sortType']) && $pagination['sortType'] === 'desc') {
+                $query->orderByDesc($pagination['sortBy']);
+            } else {
+                $query->orderBy($pagination['sortBy']);
+                $pagination['sortType'] = 'asc';
+            }
+        } else {
+            $query->orderBy('id');
+            $pagination['sortBy'] = '';
+        }
+
+        $participants = $query->paginate($pagination['per_page'] ?? 10)->withQueryString();
+
+        // check if ajax request
+        if ($req->expectsJson()) {
+            return $participants;
+        }
+
+        return view('dashboard.participant', [
+            'participants' => $participants,
+            'pagination' => $pagination,
+        ]);
     }
 
     /**

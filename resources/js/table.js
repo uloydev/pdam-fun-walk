@@ -65,6 +65,15 @@ document.addEventListener('DOMContentLoaded', function () {
         refreshWithParams(params);
     });
 
+    const resetFilterBtn = document.getElementById('resetFilterBtn');
+    resetFilterBtn.addEventListener('click', function () {
+        const params = getQueryParams();
+        params.delete('search');
+        params.delete('sortBy');
+        params.delete('sortType');
+        params.delete('per_page');
+        refreshWithParams(params);
+    });
 });
 
 const getQueryParams = () => {
