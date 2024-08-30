@@ -5,6 +5,7 @@ module.exports = {
   content: [
     './public/assets/dashboard/js/**/*.js',
     './public/assets/dashboard/css/**/*.css',
+    './resources/js/table.js',
     './resources/views/dashboard/**/*.blade.php',
     './resources/views/vendor/pagination/tailwind.blade.php',
   ],
