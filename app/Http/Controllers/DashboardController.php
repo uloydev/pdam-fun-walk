@@ -12,8 +12,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $verifiedQuery = Participant::whereNotNull('email_verified_at');
-
         $customerStock = DB::table(DB::raw('shirt_stocks s'))
         ->leftJoin(DB::raw('participants p'), function ($join) {
             $join->on(DB::raw('s.id'), '=', DB::raw('p.shirt_stock_id'));
@@ -47,8 +45,8 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard.index', [
-            'customerParticipant' => $verifiedQuery->whereNotNull('customer_code')->count() + 250,
-            'publicParticipant' => $verifiedQuery->whereNull('customer_code')->count() + 348,
+            'customerParticipant' => Participant::whereNotNull('email_verified_at')->whereNotNull('customer_code')->count(),
+            'publicParticipant' => Participant::whereNotNull('email_verified_at')->whereNull('customer_code')->count(),
             'customerQuota' => ShirtStock::where('type', 'customer')->sum('stock'),
             'publicQuota' => ShirtStock::where('type', 'public')->sum('stock'),
             'customerStock' => $customerStock,
