@@ -71,6 +71,16 @@
                         <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Customer</span>
                     </a>
                 </li>
+                <li class="mt-0.5 w-full">
+                    <a class="nav-link py-2.7 dark:text-white dark:opacity-80 ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 transition-colors {{ Route::currentRouteName() == 'dashboard.shirt.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard.shirt.index') }}">
+                        <div
+                            class="mr-2 flex h-12 w-12 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                            <i class="relative top-0 leading-normal bx bxs-t-shirt text-xl"></i>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Shirt Stock</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="px-4">

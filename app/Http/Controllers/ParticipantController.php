@@ -157,7 +157,6 @@ class ParticipantController extends Controller
         
         $link = route('participant.verify') . '?token=' . $participant->token;
 
-
         // send email
         Mail::to($participant->email)->send(new ParticipantVerification($participant, $link));
 

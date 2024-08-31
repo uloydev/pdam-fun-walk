@@ -13,4 +13,9 @@ class ShirtStock extends Model
         'size',
         'stock',
     ];
+
+    public function participants()
+    {
+        return $this->hasMany(Participant::class)->whereNotNull('email_verified_at');
+    }
 }

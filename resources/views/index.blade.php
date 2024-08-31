@@ -590,7 +590,7 @@
         const closedModal = () => {
             Swal.fire({
                 title: 'Maaf!',
-                html: '<p>Kuota sudah full</p><p>Sampai Jumpa di Event lainnya!</p>',
+                html: '<p>Kuota sudah full.</p><p>Sampai jumpa di event selannjutnya.</p><p>Selamat Hari Pelanggan Nasional!</p>',
                 icon: 'error',
                 confirmButtonText: 'Kembali'
             });

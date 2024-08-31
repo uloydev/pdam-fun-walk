@@ -26,6 +26,8 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->controller(D
     Route::prefix('participant')->name('participant.')->controller(ParticipantController::class)->group(function () {
         Route::get('/', 'index')->name('index');
     });
+
+    Route::get('/shirt', 'shirtIndex')->name('shirt.index');
 });
 
 // Route::middleware('auth')->group(function () {

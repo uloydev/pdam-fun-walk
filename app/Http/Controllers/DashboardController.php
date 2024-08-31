@@ -101,4 +101,50 @@ class DashboardController extends Controller
             'pagination' => $pagination,
         ]);
     }
+
+    public function shirtIndex(Request $req)
+    {
+        $pagination = $req->validate([
+            'page' => 'nullable|integer|min:1',
+            'per_page' => 'nullable|integer|min:1',
+            'sortBy' => 'nullable|string|in:size,stock,type',
+            'sortType' => 'nullable|string|in:asc,desc',
+            'search' => 'nullable|string',
+        ]);
+
+        $pagination['page'] = $pagination['page'] ?? 1;
+        $pagination['per_page'] = $pagination['per_page'] ?? 10;
+
+        $query = ShirtStock::withCount('participants');
+        if (isset($pagination['search']) && $pagination['search']) {
+            $query->where('size', 'like', "%{$pagination['search']}%")
+            ->orWhere('stock', 'like', "%{$pagination['search']}%");
+        } else {
+            $pagination['search'] = '';
+        }
+
+        if (isset($pagination['sortBy']) && $pagination['sortBy']) {
+            if (isset($pagination['sortType']) && $pagination['sortType'] === 'desc') {
+                $query->orderByDesc($pagination['sortBy']);
+            } else {
+                $query->orderBy($pagination['sortBy']);
+                $pagination['sortType'] = 'asc';
+            }
+        } else {
+            $query->orderBy('id');
+            $pagination['sortBy'] = '';
+        }
+
+        $shirts = $query->paginate($pagination['per_page'] ?? 10)->withQueryString();
+
+        // check if ajax request
+        if ($req->expectsJson()) {
+            return $shirts;
+        }
+
+        return view('dashboard.shirt', [
+            'shirts' => $shirts,
+            'pagination' => $pagination,
+        ]);
+    }
 }
