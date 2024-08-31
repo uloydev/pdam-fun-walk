@@ -43,8 +43,8 @@
                 <b>PENDAFTARAN DITUTUP hari Minggu, 1 September 2024.</b>
             </p>
             <div id="bannerAction" class="flex justify-center mt-12 opacity-0 transition-opacity !duration-1000">
-                <button data-target-modal="#parentModal"
-                    class="modal-btn py-2 px-20 bg-pdam-green text-white rounded-lg text-2xl shadow-lg transition duration-300 hover:bg-pdam-dark-green hover:font-bold hover:shadow-2xl">IKUT
+                <button onclick="closedModal()"
+                    class="py-2 px-20 bg-pdam-green text-white rounded-lg text-2xl shadow-lg transition duration-300 hover:bg-pdam-dark-green hover:font-bold hover:shadow-2xl">IKUT
                     FUN WALK!</button>
             </div>
         </div>

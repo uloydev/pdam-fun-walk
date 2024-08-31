@@ -188,7 +188,7 @@ class ParticipantController extends Controller
         }
 
         $participantCount = Participant::where('email_verified_at', 'IS NOT', null)->count();
-        if ($participantCount >= 1000) {
+        if ($participantCount >= 1000 || true) {
             return redirect()->route('index')->with('alert', [
                 "title" => 'Maaf...',
                 "text" => 'Gagal verifikasi email karena kuota peserta sudah terpenuhi',
