@@ -232,6 +232,65 @@ class ParticipantController extends Controller
         ]);
     }
 
+    public function pickupKit(String $id)
+    {
+        $id = (int) $id;
+        $participant = Participant::find($id);
+        if (!$participant) {
+            return response()->json([
+                'message' => 'Peserta tidak ditemukan',
+            ], 404);
+        }
+
+        // check if not verified
+        if (!$participant->email_verified_at) {
+            return response()->json([
+                'message' => 'Peserta belum terverifikasi',
+            ], 400);
+        }
+
+        $participant->kit_received_at = now();
+        $participant->save();
+
+        return response()->json([
+            'message' => 'Kit received successfully',
+            'data' => $participant,
+        ]);
+    }
+
+    public function checkin(String $id)
+    {
+        $id = (int) $id;
+        $participant = Participant::find($id);
+        if (!$participant) {
+            return response()->json([
+                'message' => 'Peserta tidak ditemukan',
+            ], 404);
+        }
+
+        // check if not verified
+        if (!$participant->email_verified_at) {
+            return response()->json([
+                'message' => 'Peserta belum terverifikasi',
+            ], 400);
+        }
+
+        // check if not received kit
+        if (!$participant->kit_received_at) {
+            return response()->json([
+                'message' => 'Peserta belum menerima kit',
+            ], 400);
+        }
+
+        $participant->checkin_at = now();
+        $participant->save();
+
+        return response()->json([
+            'message' => 'Checkin successfully',
+            'data' => $participant,
+        ]);
+    }
+
     /**
      * Display the specified resource.
      */

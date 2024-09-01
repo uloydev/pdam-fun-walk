@@ -25,6 +25,8 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->controller(D
 
     Route::prefix('participant')->name('participant.')->controller(ParticipantController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/{participant}/pickup-kit', 'pickupKit')->name('pickup-kit');
+        Route::post('/{participant}/checkin', 'checkin')->name('checkin');
     });
 
     Route::get('/shirt', 'shirtIndex')->name('shirt.index');

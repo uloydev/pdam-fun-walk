@@ -26,6 +26,18 @@
                                         'column' => 'id',
                                         'textAlign' => 'text-center',
                                     ])
+                                    @include('dashboard.fragments.table-head', [
+                                        'title' => 'Tipe',
+                                        'textAlign' => 'text-center',
+                                    ])
+                                    @include('dashboard.fragments.table-head', [
+                                        'title' => 'Ambil Kit',
+                                        'textAlign' => 'text-center',
+                                    ])
+                                    @include('dashboard.fragments.table-head', [
+                                        'title' => 'Check In',
+                                        'textAlign' => 'text-center',
+                                    ])
                                     @include('dashboard.fragments.table-head', ['title' => 'Nama'])
                                     @include('dashboard.fragments.table-head', [
                                         'title' => 'Email',
@@ -52,10 +64,6 @@
                                         'title' => 'Baju',
                                         'textAlign' => 'text-center',
                                     ])
-                                    @include('dashboard.fragments.table-head', [
-                                        'title' => 'Tipe',
-                                        'textAlign' => 'text-center',
-                                    ])
                                     @include('dashboard.fragments.table-head', ['title' => 'Instagram'])
                                     @include('dashboard.fragments.table-head', [
                                         'title' => 'Action',
@@ -70,6 +78,44 @@
                                             class="px-4 py-2 align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
                                             <h6 class="mb-0 text-sm leading-normal dark:text-white text-center">
                                                 {{ $p->participant_number }}</h6>
+                                        </td>
+                                        <td
+                                            class="px-4 py-2 text-sm leading-normal text-center align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
+                                            @if ($p->customer_code)
+                                                <span
+                                                    class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Pelanggan</span>
+                                            @else
+                                                <span
+                                                    class="bg-gradient-to-tl from-red-500 to-yellow-500 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Umum</span>
+                                            @endif
+                                        </td>
+                                        <td
+                                            class="px-4 py-2 text-sm leading-normal text-center align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
+                                            @if ($p->kit_received_at)
+                                                <p
+                                                    class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
+                                                    {{-- format to GMT+7 --}}
+                                                    {{ $p->kit_received_at->addHours(7)->format('d M Y H:i:s') }}
+                                                </p>
+                                            @else
+                                                <span
+                                                    class="bg-gradient-to-tl from-red-800 to-red-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Belum
+                                                    Ambil</span>
+                                            @endif
+                                        </td>
+                                        <td
+                                            class="px-4 py-2 text-sm leading-normal text-center align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
+                                            @if ($p->checkin_at)
+                                                <p
+                                                    class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
+                                                    {{-- format to GMT+7 --}}
+                                                    {{ $p->checkin_at->addHours(7)->format('d M Y H:i:s') }}
+                                                </p>
+                                            @else
+                                                <span
+                                                    class="bg-gradient-to-tl from-red-800 to-red-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Belum
+                                                    Check In</span>
+                                            @endif
                                         </td>
                                         <td
                                             class="px-4 py-2 align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
@@ -125,16 +171,6 @@
                                             </p>
                                         </td>
                                         <td
-                                            class="px-4 py-2 text-sm leading-normal text-center align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                            @if ($p->customer_code)
-                                                <span
-                                                    class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Pelanggan</span>
-                                            @else
-                                                <span
-                                                    class="bg-gradient-to-tl from-red-500 to-yellow-500 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Umum</span>
-                                            @endif
-                                        </td>
-                                        <td
                                             class="px-4 py-2 align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
                                             <p
                                                 class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
@@ -143,7 +179,19 @@
                                         </td>
                                         <td
                                             class="px-4 py-2 text-sm leading-normal text-center align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
+                                            <div class="flex justify-center">
+                                                @if (!$p->kit_received_at)
+                                                    <button type="button"
+                                                        class="ambil-kit px-4 py-1 rounded-lg bg-gradient-to-tl to-blue-400 from-violet-500 text-white font-semibold mr-3 hover:from-violet-700 hover:to-blue-600 transition-all hover:shadow-lg">Ambil
+                                                        Kit</button>
+                                                @endif
 
+                                                @if (!$p->checkin_at)
+                                                    <button type="button"
+                                                        class="check-in px-4 py-1s rounded-lg bg-gradient-to-tl to-teal-400 from-green-500 text-white font-semibold mr-3 hover:from-green-700 hover:to-teal-700 transition-all hover:shadow-lg">Check
+                                                        In</button>
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -161,4 +209,120 @@
 
 @push('script')
     @vite('resources/js/table.js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const ambilKit = document.querySelectorAll('.ambil-kit');
+        const checkIn = document.querySelectorAll('.check-in');
+
+        ambilKit.forEach((btn) => {
+            btn.addEventListener('click', async (e) => {
+                const participantNumber = e.target.closest('tr').querySelector('td:first-child')
+                    .textContent.trim();
+                Swal.fire({
+                    title: 'Ambil Kit',
+                    text: `Apakah Anda yakin peserta ${participantNumber} ingin mengambil kit?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const response = await fetch(
+                            `/dashboard/participant/${participantNumber}/pickup-kit`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                },
+                            });
+                        const data = await response.json();
+                        if (response.ok) {
+                            e.target.closest('tr').querySelectorAll('td')[2].innerHTML =
+                                `<p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">${new Date(data.data.kit_received_at).toLocaleString()}</p>`;
+                            e.target.remove();
+                            Swal.fire({
+                                title: 'Berhasil',
+                                text: 'Peserta berhasil mengambil kit',
+                                icon: 'success',
+                                confirmButtonText: 'Kembali'
+                            });
+                        } else if (response.status < 500) {
+                            Swal.fire({
+                                title: 'Maaf...',
+                                html: `<p class="text-left text-red-500 p-4 flex flex-col gap-y-2 text-lg rounded-lg bg-red-200">
+                                    ${data.message}
+                                </p>`,
+                                icon: 'error',
+                                confirmButtonText: 'Kembali'
+                            }).then(() => location.reload());
+                        } else {
+                            Swal.fire({
+                                title: 'Maaf...',
+                                text: 'Terjadi kesalahan saat mengambil kit',
+                                icon: 'error',
+                                confirmButtonText: 'Kembali'
+                            }).then(() => location.reload());
+                        }
+                    }
+                });
+            });
+        });
+
+        checkIn.forEach((btn) => {
+
+            btn.addEventListener('click', async (e) => {
+                const participantNumber = e.target.closest('tr').querySelector('td:first-child')
+                    .textContent.trim();
+                Swal.fire({
+                    title: 'Check In',
+                    text: `Apakah Anda yakin ingin peserta ${participantNumber} check in?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const response = await fetch(
+                            `/dashboard/participant/${participantNumber}/checkin`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                },
+                            });
+                        const data = await response.json();
+                        if (response.ok) {
+                            e.target.closest('tr').querySelectorAll('td')[3].innerHTML =
+                                `<p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">${new Date(data.data.checkin_at).toLocaleString()}</p>`;
+                            e.target.remove();
+                            Swal.fire({
+                                title: 'Berhasil',
+                                text: 'Peserta berhasil check in',
+                                icon: 'success',
+                                confirmButtonText: 'Kembali'
+                            });
+                        } else if (response.status < 500) {
+                            Swal.fire({
+                                title: 'Maaf...',
+                                html: `<p class="text-left text-red-500 p-4 flex flex-col gap-y-2 text-lg rounded-lg bg-red-200">
+                                    ${data.message}
+                                </p>`,
+                                icon: 'error',
+                                confirmButtonText: 'Kembali'
+                            }).then(() => location.reload());
+                        } else {
+                            Swal.fire({
+                                title: 'Maaf...',
+                                text: 'Terjadi kesalahan saat check in',
+                                icon: 'error',
+                                confirmButtonText: 'Kembali'
+                            }).then(() => location.reload());
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endpush

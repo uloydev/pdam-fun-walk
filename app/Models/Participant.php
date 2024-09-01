@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,12 +20,16 @@ class Participant extends Model
         'token',
         'additional_participant',
         'shirt_stock_id',
+        'checkin_at',
+        'kit_received_at',
         'instagram',
     ];
 
     protected $casts = [
         'additional_participant' => 'array',
         'email_verified_at' => 'datetime',
+        'checkin_at' => 'datetime',
+        'kit_received_at' => 'datetime',
     ];
 
     protected $hidden = [
@@ -35,6 +40,24 @@ class Participant extends Model
     public function getParticipantNumberAttribute(): string
     {
         return str_pad($this->id ?? "", 4, '0', STR_PAD_LEFT);
+    }
+
+    public function getCheckinAtAttribute()
+    {
+        // format from utc to gmt+7 using Carbon
+        return $this->attributes['checkin_at'] ? Carbon::parse($this->attributes['checkin_at'])->addHours(7) : null;
+    }
+
+    public function getEmailVerifiedAtAttribute()
+    {
+        // format from utc to gmt+7 using Carbon
+        return $this->attributes['email_verified_at'] ? Carbon::parse($this->attributes['email_verified_at'])->addHours(7) : null;
+    }
+
+    public function getKitReceivedAtAttribute()
+    {
+        // format from utc to gmt+7 using Carbon
+        return $this->attributes['kit_received_at'] ? Carbon::parse($this->attributes['kit_received_at'])->addHours(7) : null;
     }
 
     public function customer()

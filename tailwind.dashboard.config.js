@@ -7,6 +7,7 @@ module.exports = {
     './public/assets/dashboard/css/**/*.css',
     './resources/js/table.js',
     './resources/views/dashboard/**/*.blade.php',
+    './resources/views/auth/**/*.blade.php',
     './resources/views/vendor/pagination/tailwind.blade.php',
   ],
   presets: [],
