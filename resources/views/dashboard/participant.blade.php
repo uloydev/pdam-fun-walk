@@ -197,9 +197,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="lg:p-6">
-                            {{ $participants->onEachSide(2)->links() }}
-                        </div>
+                    </div>
+                    <div class="lg:p-6">
+                        {{ $participants->onEachSide(2)->links() }}
                     </div>
                 </div>
             </div>

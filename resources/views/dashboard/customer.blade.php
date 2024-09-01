@@ -64,9 +64,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="lg:p-6">
-                            {{ $customers->onEachSide(2)->links() }}
-                        </div>
+                    </div>
+                    <div class="lg:p-6">
+                        {{ $customers->onEachSide(2)->links() }}
                     </div>
                 </div>
             </div>
