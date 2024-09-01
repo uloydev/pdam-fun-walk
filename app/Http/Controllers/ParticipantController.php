@@ -29,7 +29,7 @@ class ParticipantController extends Controller
         $pagination['page'] = $pagination['page'] ?? 1;
         $pagination['per_page'] = $pagination['per_page'] ?? 10;
 
-        $query = Participant::with('shirtStock');
+        $query = Participant::with('shirtStock')->where('email_verified_at', 'IS NOT', null);
         if (isset($pagination['search']) && $pagination['search']) {
             $query->where('email', 'like', "%{$pagination['search']}%")
             ->orWhere('nik', 'like', "%{$pagination['search']}%")
