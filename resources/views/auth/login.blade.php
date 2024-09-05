@@ -20,14 +20,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Argon Dashboard 2 Tailwind by Creative Tim</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Main Styling -->
     @vite('resources/css/dashboard.css')
 </head>
 
-<body class="m-0 font-sans antialiased font-normal bg-blue-400 dark:bg-slate-700 text-start text-base leading-default text-blue-800 dark:text-slate-200">
+<body class="m-0 font-sans antialiased font-normal bg-gradient-to-tr from-cyan-500 to-blue-600 dark:from-blue-800 dark:to-slate-900 text-start text-base leading-default text-blue-800 dark:text-slate-200 transition-all duration-200 ease-linear">
     <main class="mt-0 transition-all duration-200 ease-in-out">
         <section>
             <div class="relative flex items-center min-h-screen p-0 overflow-hidden bg-center bg-cover">
@@ -47,7 +47,7 @@
                                         @method('POST')
                                         <div class="mb-4">
                                             <input type="email" placeholder="Email" name="email"
-                                                class="focus:shadow-primary-outline dark:bg-slate-700 dark:placeholder:text-slate-200/80 dark:text-slate-200/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-slate-200 bg-slate-100 bg-clip-padding p-3 font-normal text-slate-700 outline-none transition-all placeholder:text-slate-500 focus:border-blue-500 focus:outline-none" value="{{ old('email') }}" />
+                                                class="focus:shadow-primary-outline dark:bg-slate-700 dark:placeholder:text-slate-200/80 dark:text-slate-200/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-slate-200 bg-slate-100/75 bg-clip-padding p-3 font-normal text-slate-900 outline-none transition-all placeholder:text-slate-500 focus:border-blue-500 focus:outline-none" value="{{ old('email') }}" />
                                             {{-- check input errors --}}
                                             @error('email')
                                                 <small class="text-red-500 mt-2">{{ $message }}</small>
@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="mb-4">
                                             <input type="password" placeholder="Password" name="password"
-                                                class="focus:shadow-primary-outline dark:bg-slate-700 dark:placeholder:text-slate-200/80 dark:text-slate-200/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-slate-200 bg-slate-100 bg-clip-padding p-3 font-normal text-slate-700 outline-none transition-all placeholder:text-slate-500 focus:border-blue-500 focus:outline-none" />
+                                                class="focus:shadow-primary-outline dark:bg-slate-700 dark:placeholder:text-slate-200/80 dark:text-slate-200/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-slate-200 bg-slate-100/75 bg-clip-padding p-3 font-normal text-slate-900 outline-none transition-all placeholder:text-slate-500 focus:border-blue-500 focus:outline-none" />
                                             {{-- check input errors --}}
                                             @error('password')
                                                 <small class="text-red-500 mt-2">{{ $message }}</small>

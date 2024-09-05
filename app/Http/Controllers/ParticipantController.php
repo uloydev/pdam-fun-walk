@@ -6,7 +6,9 @@ use App\Mail\ParticipantVerification;
 use App\Mail\ParticipantVerified;
 use App\Models\Participant;
 use App\Models\ShirtStock;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
@@ -16,7 +18,7 @@ class ParticipantController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $req)
+    public function public(Request $req)
     {
         $pagination = $req->validate([
             'page' => 'nullable|integer|min:1',
@@ -29,17 +31,78 @@ class ParticipantController extends Controller
         $pagination['page'] = $pagination['page'] ?? 1;
         $pagination['per_page'] = $pagination['per_page'] ?? 10;
 
-        $query = Participant::with('shirtStock')->where('email_verified_at', 'IS NOT', null);
+        $query = Participant::with('shirtStock')
+            ->where([
+                ['customer_code', '=', null],
+                ['email_verified_at', 'IS NOT', null]
+            ]);
         if (isset($pagination['search']) && $pagination['search']) {
-            $query->where('email', 'like', "%{$pagination['search']}%")
-            ->orWhere('nik', 'like', "%{$pagination['search']}%")
-            ->orWhere('customer_code', 'like', "%{$pagination['search']}%");
+            // $query->where('email', 'like', "%{$pagination['search']}%")
+            // ->orWhere('nik', 'like', "%{$pagination['search']}%")
+            // ->orWhere('customer_code', 'like', "%{$pagination['search']}%");
         } else {
             $pagination['search'] = '';
         }
         $numSearch = (int) $pagination['search'];
         if ($numSearch) {
-            $query->orWhere('id', $numSearch);
+            $query->where('id', $numSearch);
+        }
+
+        if (isset($pagination['sortBy']) && $pagination['sortBy']) {
+            if (isset($pagination['sortType']) && $pagination['sortType'] === 'desc') {
+                $query->orderByDesc($pagination['sortBy']);
+            } else {
+                $query->orderBy($pagination['sortBy']);
+                $pagination['sortType'] = 'asc';
+            }
+        } else {
+            $query->orderBy('id');
+            $pagination['sortBy'] = '';
+        }
+
+        // dd($query->toSql());
+
+        $participants = $query->paginate($pagination['per_page'] ?? 10)->withQueryString();
+
+        // check if ajax request
+        if ($req->expectsJson()) {
+            return $participants;
+        }
+
+        return view('dashboard.participant', [
+            'participants' => $participants,
+            'pagination' => $pagination,
+            'title' => 'Peserta Umum',
+            'type' => 'public',
+        ]);
+    }
+
+    public function customer(Request $req)
+    {
+        $pagination = $req->validate([
+            'page' => 'nullable|integer|min:1',
+            'per_page' => 'nullable|integer|min:1',
+            'sortBy' => 'nullable|string|in:id,name,email,phone,nik,customer_code',
+            'sortType' => 'nullable|string|in:asc,desc',
+            'search' => 'nullable|string',
+        ]);
+
+        $pagination['page'] = $pagination['page'] ?? 1;
+        $pagination['per_page'] = $pagination['per_page'] ?? 10;
+
+        $query = Participant::with('shirtStock')
+            ->where('customer_code', 'IS NOT', null)
+            ->where('email_verified_at', 'IS NOT', null);
+        if (isset($pagination['search']) && $pagination['search']) {
+            // $query->where('email', 'like', "%{$pagination['search']}%")
+            // ->orWhere('nik', 'like', "%{$pagination['search']}%")
+            // ->orWhere('customer_code', 'like', "%{$pagination['search']}%");
+        } else {
+            $pagination['search'] = '';
+        }
+        $numSearch = (int) $pagination['search'];
+        if ($numSearch) {
+            $query->where('id', $numSearch);
         }
 
         if (isset($pagination['sortBy']) && $pagination['sortBy']) {
@@ -64,6 +127,8 @@ class ParticipantController extends Controller
         return view('dashboard.participant', [
             'participants' => $participants,
             'pagination' => $pagination,
+            'title' => 'Peserta Pelanggan PDAM',
+            'type' => 'customer',
         ]);
     }
 
@@ -249,12 +314,15 @@ class ParticipantController extends Controller
             ], 400);
         }
 
-        $participant->kit_received_at = now();
-        $participant->save();
+        $participant->update([
+            'kit_received_at' => Carbon::now(),
+        ]);
 
         return response()->json([
             'message' => 'Kit received successfully',
             'data' => $participant,
+            'timestamp' =>
+            $participant->kit_received_at->format('d M Y H:i:s'),
         ]);
     }
 

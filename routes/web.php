@@ -11,6 +11,10 @@ Route::get('/', function () {
     ]);
 })->name('index');
 
+Route::get('/anima', function () {
+    return view('anima');
+})->name('anima');
+
 Route::name('participant.')->prefix('participant')->controller(ParticipantController::class)->group(function () {
     Route::post('/register', 'store')->name('register');
     Route::get('/verify', 'verify')->name('verify');
@@ -24,13 +28,19 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->controller(D
     Route::get('/customer', 'customerIndex')->name('customer.index');
 
     Route::prefix('participant')->name('participant.')->controller(ParticipantController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
+        Route::get('/public', 'public')->name('public');
+        Route::get('/customer', 'customer')->name('customer');
         Route::post('/{participant}/pickup-kit', 'pickupKit')->name('pickup-kit');
         Route::post('/{participant}/checkin', 'checkin')->name('checkin');
     });
 
     Route::get('/shirt', 'shirtIndex')->name('shirt.index');
+
 });
+
+Route::get('/doorprize', [DashboardController::class, 'doorprize'])->middleware('auth')->name('doorprize.index');
+Route::get('/doorprize/spin', [DashboardController::class, 'doorprizeSpin'])->middleware('auth')->name('doorprize.spin');
+
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -42,23 +42,23 @@ class Participant extends Model
         return str_pad($this->id ?? "", 4, '0', STR_PAD_LEFT);
     }
 
-    public function getCheckinAtAttribute()
-    {
-        // format from utc to gmt+7 using Carbon
-        return $this->attributes['checkin_at'] ? Carbon::parse($this->attributes['checkin_at'])->addHours(7) : null;
-    }
+    // public function getCheckinAtAttribute()
+    // {
+    //     // format from utc to gmt+7 using Carbon
+    //     return $this->attributes['checkin_at'] ? Carbon::parse($this->attributes['checkin_at'])->addHours(7) : null;
+    // }
 
-    public function getEmailVerifiedAtAttribute()
-    {
-        // format from utc to gmt+7 using Carbon
-        return $this->attributes['email_verified_at'] ? Carbon::parse($this->attributes['email_verified_at'])->addHours(7) : null;
-    }
+    // public function getEmailVerifiedAtAttribute()
+    // {
+    //     // format from utc to gmt+7 using Carbon
+    //     return $this->attributes['email_verified_at'] ? Carbon::parse($this->attributes['email_verified_at'])->addHours(7) : null;
+    // }
 
-    public function getKitReceivedAtAttribute()
-    {
-        // format from utc to gmt+7 using Carbon
-        return $this->attributes['kit_received_at'] ? Carbon::parse($this->attributes['kit_received_at'])->addHours(7) : null;
-    }
+    // public function getKitReceivedAtAttribute()
+    // {
+    //     // format from utc to gmt+7 using Carbon
+    //     return $this->attributes['kit_received_at'] ? Carbon::parse($this->attributes['kit_received_at'])->addHours(7) : null;
+    // }
 
     public function customer()
     {
