@@ -51,6 +51,10 @@ class DashboardController extends Controller
             'publicQuota' => ShirtStock::where('type', 'public')->sum('stock'),
             'customerStock' => $customerStock,
             'publicStock' => $publicStock,
+            'customerKitsTaken' => Participant::whereNotNull('email_verified_at')->whereNotNull('customer_code')->whereNotNull('kit_received_at')->count(),
+            'publicKitsTaken' => Participant::whereNotNull('email_verified_at')->whereNull('customer_code')->whereNotNull('kit_received_at')->count(),
+            'customerCheckin' => Participant::whereNotNull('email_verified_at')->whereNotNull('customer_code')->whereNotNull('checkin_at')->count(),
+            'publicCheckin' => Participant::whereNotNull('email_verified_at')->whereNull('customer_code')->whereNotNull('checkin_at')->count(),
         ]);
     }
 
