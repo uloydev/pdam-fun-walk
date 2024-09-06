@@ -37,15 +37,13 @@ class ParticipantController extends Controller
                 ['email_verified_at', 'IS NOT', null]
             ]);
         if (isset($pagination['search']) && $pagination['search']) {
-            // $query->where('email', 'like', "%{$pagination['search']}%")
-            // ->orWhere('nik', 'like', "%{$pagination['search']}%")
-            // ->orWhere('customer_code', 'like', "%{$pagination['search']}%");
+            $query->where('name', 'like', "%{$pagination['search']}%");
         } else {
             $pagination['search'] = '';
         }
         $numSearch = (int) $pagination['search'];
         if ($numSearch) {
-            $query->where('id', $numSearch);
+            $query->orWhere('id', $numSearch);
         }
 
         if (isset($pagination['sortBy']) && $pagination['sortBy']) {
@@ -94,15 +92,13 @@ class ParticipantController extends Controller
             ->where('customer_code', 'IS NOT', null)
             ->where('email_verified_at', 'IS NOT', null);
         if (isset($pagination['search']) && $pagination['search']) {
-            // $query->where('email', 'like', "%{$pagination['search']}%")
-            // ->orWhere('nik', 'like', "%{$pagination['search']}%")
-            // ->orWhere('customer_code', 'like', "%{$pagination['search']}%");
+            $query->where('name', 'like', "%{$pagination['search']}%");
         } else {
             $pagination['search'] = '';
         }
         $numSearch = (int) $pagination['search'];
         if ($numSearch) {
-            $query->where('id', $numSearch);
+            $query->orWhere('id', $numSearch);
         }
 
         if (isset($pagination['sortBy']) && $pagination['sortBy']) {
@@ -322,7 +318,7 @@ class ParticipantController extends Controller
             'message' => 'Kit received successfully',
             'data' => $participant,
             'timestamp' =>
-            $participant->kit_received_at->format('d M Y H:i:s'),
+            $participant->kit_received_at->addHours(7)->format('d M Y H:i:s'),
         ]);
     }
 

@@ -97,7 +97,7 @@
                                                 <p
                                                     class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">
                                                     {{-- format to GMT+7 --}}
-                                                    {{ $p->kit_received_at->format('d M Y H:i:s') }}
+                                                    {{ $p->kit_received_at->addHours(7)->format('d M Y H:i:s') }}
                                                 </p>
                                             @else
                                                 <span
