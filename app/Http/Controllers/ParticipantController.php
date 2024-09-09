@@ -32,10 +32,8 @@ class ParticipantController extends Controller
         $pagination['per_page'] = $pagination['per_page'] ?? 10;
 
         $query = Participant::with('shirtStock')
-            ->where([
-                ['customer_code', '=', null],
-                ['email_verified_at', 'IS NOT', null]
-            ]);
+            ->whereNull('customer_code')
+            ->whereNotNull('email_verified_at');
         if (isset($pagination['search']) && $pagination['search']) {
             $query->where('name', 'like', "%{$pagination['search']}%");
         } else {
@@ -346,12 +344,14 @@ class ParticipantController extends Controller
             ], 400);
         }
 
-        $participant->checkin_at = now();
+        $participant->checkin_at = Carbon::now();
         $participant->save();
 
         return response()->json([
             'message' => 'Checkin successfully',
             'data' => $participant,
+            'timestamp' =>
+            $participant->checkin_at->addHours(7)->format('d M Y H:i:s'),
         ]);
     }
 

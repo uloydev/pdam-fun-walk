@@ -34,10 +34,10 @@
                                         'title' => 'Ambil Kit',
                                         'textAlign' => 'text-center',
                                     ])
-                                    {{-- @include('dashboard.fragments.table-head', [
+                                    @include('dashboard.fragments.table-head', [
                                         'title' => 'Check In',
                                         'textAlign' => 'text-center',
-                                    ]) --}}
+                                    ])
                                     @include('dashboard.fragments.table-head', ['title' => 'Nama'])
                                     @include('dashboard.fragments.table-head', [
                                         'title' => 'Email',
@@ -105,7 +105,7 @@
                                                     Ambil</span>
                                             @endif
                                         </td>
-                                        {{-- <td
+                                        <td
                                             class="px-4 py-2 text-sm leading-normal text-center align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
                                             @if ($p->checkin_at)
                                                 <p
@@ -117,7 +117,7 @@
                                                     class="bg-gradient-to-tl from-red-800 to-red-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Belum
                                                     Check In</span>
                                             @endif
-                                        </td> --}}
+                                        </td>
                                         <td
                                             class="px-4 py-2 align-middle bg-transparent {{ $loop->last ? '' : 'border-b' }} dark:border-white/40 whitespace-nowrap shadow-transparent">
                                             <p
@@ -187,7 +187,14 @@
                                                     <button type="button"
                                                         class="ambil-kit px-4 py-1 rounded-lg bg-gradient-to-tl to-blue-400 from-violet-500 text-white font-semibold mr-3 hover:from-violet-700 hover:to-blue-600 transition-all hover:shadow-lg">Ambil
                                                         Kit</button>
+                                                @else
+                                                    @if (!$p->checkin_at)
+                                                        <button type="button"
+                                                            class="check-in px-4 py-1 rounded-lg bg-gradient-to-tl to-green-400 from-emerald-500 text-white font-semibold hover:from-emerald-700 hover:to-green-600 transition-all hover:shadow-lg">Check
+                                                            In</button>
+                                                    @endif
                                                 @endif
+
                                             </div>
                                         </td>
                                     </tr>
@@ -209,7 +216,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const ambilKit = document.querySelectorAll('.ambil-kit');
-        //const checkIn = document.querySelectorAll('.check-in');
+        const checkIn = document.querySelectorAll('.check-in');
 
         ambilKit.forEach((btn) => {
             btn.addEventListener('click', async (e) => {
@@ -243,7 +250,8 @@
                                 text: 'Peserta berhasil mengambil kit',
                                 icon: 'success',
                                 confirmButtonText: 'Kembali'
-                            });
+                            }).then(() => location.reload());
+
                         } else if (response.status < 500) {
                             Swal.fire({
                                 title: 'Maaf...',
@@ -266,14 +274,13 @@
             });
         });
 
-        /*checkIn.forEach((btn) => {
-
+        checkIn.forEach((btn) => {
             btn.addEventListener('click', async (e) => {
                 const participantNumber = e.target.closest('tr').querySelector('td:first-child')
                     .textContent.trim();
                 Swal.fire({
                     title: 'Check In',
-                    text: `Apakah Anda yakin ingin peserta ${participantNumber} check in?`,
+                    text: `Apakah Anda yakin peserta ${participantNumber} ingin check in?`,
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'Ya',
@@ -281,7 +288,7 @@
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         const response = await fetch(
-                            `/dashboard/participant/${participantNumber}/checkin`, {
+                            `/dashboard/participant/${participantNumber}/check-in`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -292,7 +299,7 @@
                         const data = await response.json();
                         if (response.ok) {
                             e.target.closest('tr').querySelectorAll('td')[3].innerHTML =
-                                `<p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">${new Date(data.data.checkin_at).toLocaleString()}</p>`;
+                                `<p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">${data.timestamp}</p>`;
                             e.target.remove();
                             Swal.fire({
                                 title: 'Berhasil',
@@ -304,8 +311,8 @@
                             Swal.fire({
                                 title: 'Maaf...',
                                 html: `<p class="text-left text-red-500 p-4 flex flex-col gap-y-2 text-lg rounded-lg bg-red-200">
-                                ${data.message}
-                            </p>`,
+                                    ${data.message}
+                                </p>`,
                                 icon: 'error',
                                 confirmButtonText: 'Kembali'
                             }).then(() => location.reload());
@@ -320,7 +327,7 @@
                     }
                 });
             });
-        });*/
+        });
 
         function formatDateToLocal(date) {
             const optionsDate = {

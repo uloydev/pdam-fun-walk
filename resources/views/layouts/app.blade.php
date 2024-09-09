@@ -13,7 +13,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-rubik antialiased">
-        <div class="min-h-screen">
+        <div class="min-h-screen overflow-hidden">
             @yield('content')
         </div>
 

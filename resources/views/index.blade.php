@@ -1,16 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <nav class="h-20 w-full container pt-5 fixed top-0 left-1/2 -translate-x-1/2">
-        <div class="flex justify-between text-white">
-            <a class="text-xl xl:text-4xl font-bold h-full flex gap-x-4 items-center" href="{{ route('index') }}">
-                <img class="pl-4 h-6 xl:pl-0 xlh-10" alt="navbar logo" src="{{ asset('assets/img/logo.png') }}">
-                PT. TIRTA ASASTA
-            </a>
-            {{-- <div class="flex items-center">
+    <nav class="h-20 w-full pt-5 fixed top-0 left-1/2 -translate-x-1/2 z-50 transition duration-500">
+        <div class="container mx-auto">
+
+            <div class="flex justify-between text-white">
+                <a class="text-xl xl:text-4xl font-bold h-full flex gap-x-4 items-center" href="{{ route('index') }}">
+                    <img class="pl-4 h-6 xl:pl-0 xlh-10" alt="navbar logo" src="{{ asset('assets/img/logo.png') }}">
+                    PT. TIRTA ASASTA
+                </a>
+                {{-- <div class="flex items-center">
                     <a href=""
-                        class="py-2 px-6 bg-pdam-blue text-white text-lg rounded-lg font-semibold transition-all shadow hover:bg-pdam-dark-blue">Register</a>
+                    class="py-2 px-6 bg-pdam-blue text-white text-lg rounded-lg font-semibold transition-all shadow hover:bg-pdam-dark-blue">Register</a>
                 </div> --}}
+            </div>
         </div>
     </nav>
     <div class="min-h-screen w-full top-0 left-0 relative overflow-hidden bg-transparent">
@@ -49,33 +52,149 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="container relative mx-auto mb-20 min-h-screen">
-            <div class="w-full bg-white shadow-lg rounded-xl -mt-20 h-full">
-                <div class="grid grid-cols-4 gap-x-12 p-6 h-1/2">
-                    <div class="col-span-1 h-full pl-4 py-4 flex flex-col justify-between">
-                        <div class="text-right">
-                            <h2 class="font-semibold text-4xl">
+    <div class="bg-gradient-to-t from-pdam-blue/40 to-transparent relative">
+        <img src="{{ asset('assets/img/blob1.svg') }}" alt="blob 1"
+            class="absolute -left-20 bottom-[30%] lg:bottom-[20%] -translate-y-1/2 w-full md:w-3/4 lg:w-1/2 rotate-[10deg] -z-10">
+        <div class="container relative mx-auto min-h-screen">
+            {{-- track --}}
+            <div class="w-full bg-white shadow-lg rounded-xl -mt-10 h-full">
+                <div id="trackContainer"
+                    class="grid sm:grid-cols-4 gap-x-12 p-6 h-1/2 items-center justify-center transition-all">
+                    <div id="trackInfo"
+                        class="col-span-1 h-full pl-4 py-4 flex sm:flex-col justify-between transition-all gap-x-4 sm:gap-x-0">
+                        <div class="initial-detail sm:text-right">
+                            <h2 class="font-semibold text-2xl md:text-4xl">
                                 FUNWALK TRACK
                             </h2>
-                            <p class="text-3xl mt-3 flex justify-end items-center gap-x-1">
+                            <p id="trackTime"
+                                class="text-xl sm:text-xl md:text-3xl mt-3 flex sm:justify-end items-center gap-x-1">
                                 <i class='bx bx-stopwatch'></i>
-                                01:15:00
+                                00:56:00
                             </p>
                         </div>
-                        <div class="flex justify-end items-start font-semibold gap-x-2">
-                            <p class="text-9xl text-right">
-                                2.5
+                        <div class="detail hidden">
+                            <h3 class="text-lg sm:text-xl font-bold"><i class='bx bxs-map'></i> ALUN - ALUN DEPOK</h3>
+                            <p class="text-sm sm:text-base">Rute Alun Alun Depok - Cluster Alamanda - Depok Sports
+                                Hall<br>Putar
+                                balik “ACE Hardware” - Alun Alun Depok</p>
+                        </div>
+                        <div id="trackLength"
+                            class="flex sm:justify-end items-center sm:items-start font-semibold gap-x-2 mt-4 sm:mt-0">
+                            <p class="text-5xl md:text-6xl xl:text-9xl text-right">
+                                4.8
                             </p>
-                            <span class="text-3xl pt-3">KM</span>
+                            <span class="md:text-3xl pt-3">KM</span>
                         </div>
                     </div>
-                    <div class="col-span-3">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit fuga consequuntur aliquam, laborum vero ratione unde corporis fugiat architecto? Laborum exercitationem tenetur impedit nihil ipsum ab expedita? Earum modi esse dolor tempora aliquam quaerat nulla ipsa a, recusandae, culpa suscipit animi. Modi reprehenderit a, magni quae quam saepe architecto rerum unde. Sunt itaque temporibus consequatur iure sequi nulla tempore vitae nostrum. Aspernatur dignissimos nulla explicabo ratione nemo consectetur tenetur exercitationem natus iusto laboriosam omnis nostrum inventore repudiandae, repellendus nobis corporis, aliquid eaque id deserunt laudantium. Vel, quis culpa eligendi enim illo, molestias quisquam tenetur veritatis deserunt atque dolorum dignissimos dolore.
+                    <div id="trackImageContainer" class="sm:col-span-3 relative group transition-all"
+                        onclick="trackToggle(event)">
+                        <img src="{{ asset('assets/img/simple-track.png') }}" alt="simple track" class="transition-all">
+                        <div
+                            class="absolute w-[99%] h-1/2 bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-t from-black/50 to-transparent rounded-b-[1.75rem] pointer-events-none opacity-0 group-hover:opacity-100 transition-all flex flex-col justify-end items-center pb-2">
+                            <p class="font-semibold text-white capitalize text-xl">Lihat Lebih Lengkap.</p>
+                            <i class='bx bx-chevron-up text-5xl text-white'></i>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div> --}}
+
+            {{-- map --}}
+            <div class="w-full bg-white shadow-lg rounded-xl mt-10 sm:mt-20 h-full">
+                <div id="mapContainer"
+                    class="grid sm:grid-cols-4 sm:gap-x-12 p-6 h-1/2 items-center justify-center transition-all">
+                    <div id="mapImageContainer" class="sm:col-span-3 relative group transition-all"
+                        onclick="mapToggle(event)">
+                        <img src="{{ asset('assets/img/simple-map.png') }}" alt="simple map" class="transition-all">
+                        <div
+                            class="absolute w-full h-1/2 bottom-0 left-1/2 -translate-x-1/2 bg-gradient-to-t from-black/50 to-transparent rounded-b-lg pointer-events-none opacity-0 group-hover:opacity-100 transition-all flex flex-col justify-end items-center pb-2">
+                            <p class="font-semibold text-white capitalize text-xl">Lihat Lebih Lengkap.</p>
+                            <i class='bx bx-chevron-up text-5xl text-white'></i>
+                        </div>
+                    </div>
+                    <div id="mapInfo"
+                        class="col-span-1 h-full xl:pl-4 py-4 sm:flex sm:flex-col transition-all xl:gap-x-4 sm:gap-x-0 gap-y-4 justify-between xl:pr-6">
+                        <h2 class="font-semibold text-2xl sm:text-3xl lg:text-5xl xl:text-7xl sm:text-right">
+                            VENUE MAP
+                        </h2>
+                        <h3 class="mt-2 sm:mt-0 lg:text-lg xl:text-2xl font-semibold sm:text-right"><i
+                                class='bx bxs-map'></i>
+                            ALUN - ALUN DEPOK</h3>
+                    </div>
+                </div>
+            </div>
+
+            {{-- guest star --}}
+            <div class="w-full grid sm:grid-cols-2 p-12 gap-x-4 items-center gap-y-10">
+                <img src="{{ asset('assets/img/guest-star.png') }}" alt="Guest Star" class="w-full aspect-square">
+                <div>
+                    <p class="font-bold text-3xl xl:text-5xl pl-2 xl:pl-6">WITH SPECIAL PERFORMANCE!</p>
+                    <img src="{{ asset('assets/img/guest-star-name.png') }}" alt="Guest Star Name"
+                        class="w-full -ml-4 xl:-mt-4">
+                    <p class="sm:text-xl xl:text-2xl md:px-4 xl:px-12 text-justify sm:text-left">Endah N Rhesa is a musical
+                        project comprising acoustic guitar, bass and vocal. The musical nuance that Endah N Rhesa tries to
+                        bring
+                        out is folk, jazz, blues, rock and roll, and ballads. Endah Widiastuti (vocal, guitar) and Rhesa
+                        Aditya
+                        (bass) met each other in a rock band in early 2003. Shortly after the two left the band in 2004,</p>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="container mx-auto pt-6 pb-20 relative mt-10 px-4 md:px-0 xl:px-10">
+
+            {{-- footer --}}
+            <div class="flex flex-col lg:flex-row gap-x-12 lg:items-center gap-y-6">
+                <img src="{{ asset('assets/img/footer-logo.png') }}" alt="logo footer"
+                    class="w-1/3 sm:w-1/4 lg:w-full xl:pr-10 mx-auto mt-10">
+                <div class="flex-grow text-white flex flex-col gap-y-2 sm:gap-y-6">
+                    <p class="font-bold text-2xl sm:text-3xl">ABOUT</p>
+                    <p class="sm:text-xl">
+                        Tirta Asasta adalah "Air Kesejahteraan", hal ini menjadikan PDAM sebagai lembaga yang
+                        melalui air dapat mensejahterakan rakyatnya, dengan memberi banyak manfaat dan keberkahan.
+                    </p>
+                    <div class="flex gap-x-4 h-[5rem]">
+                        <img src="{{ asset('assets/img/cert1.png') }}" alt="cert1" class="h-full">
+                        <img src="{{ asset('assets/img/cert2.png') }}" alt="cert2" class="h-full">
+                    </div>
+                </div>
+                <div class="flex flex-col md:gap-y-6 text-white md:text-xl xl:text-3xl ">
+                    <div class="flex gap-x-4 items-center">
+                        {{-- icon map --}}
+                        <div class="h-14 w-14 flex items-center justify-center">
+                            <i class="bx bxs-map bg-pdam-dark-blue p-2 rounded-full"></i>
+                        </div>
+                        <p><b>Sukmajaya, </b> Kota Depok, Jawa Barat</p>
+                    </div>
+                    {{-- phone --}}
+                    <div class="flex gap-x-4 items-center">
+                        <div class="h-14 w-14 flex items-center justify-center">
+                            <i class="bx bxs-phone-call bg-pdam-dark-blue p-2 rounded-full"></i>
+                        </div>
+                        <p>(021) 778 20897</p>
+                    </div>
+                    {{-- email --}}
+                    <div class="flex gap-x-4 items-center">
+                        <div class="h-14 w-14 flex items-center justify-center">
+                            <i class="bx bxs-envelope bg-pdam-dark-blue p-2 rounded-full"></i>
+                        </div>
+                        <p class="border-b border-white">info@tirtaasastadepok.co.id</p>
+                    </div>
+
+                </div>
+
+            </div>
+            <img src="{{ asset('assets/img/wave2.png') }}" alt="wave1"
+                class="absolute bottom-0 -left-[25%] -z-10 rotate-180 w-[400%] max-w-[400%] lg:w-[200%] lg:max-w-[200%] h-[110%] lg:h-[120%] filter brightness-50 -scale-x-100">
+            <img src="{{ asset('assets/img/wave2.png') }}" alt="wave2"
+                class="absolute bottom-0 -left-[25%] -z-10 rotate-180 w-[400%] max-w-[400%] lg:w-[200%] lg:max-w-[200%] h-[110%] lg:h-[120%]">
+            {{-- <img src="{{ asset('assets/img/wave1.png') }}" alt="wave1"
+            class="absolute h-[105%] w-[400%] max-w-[400%] lg:w-[200%] -top-[105%] left-0 lg:max-w-[200%] -z-10 object-cover"
+            style="transition: all 3s linear;"> --}}
+        </div>
+    </div>
 
     <div id="modalOverlay" class="fixed h-screen w-full top-0 left-0 overflow-hidden hidden">
         {{-- parent modal --}}
@@ -84,7 +203,8 @@
                 class="modal-btn inline-block py-4 w-96 max-w-full bg-pdam-blue text-white text-lg rounded-lg font-semibold transition-all shadow hover:bg-pdam-dark-blue">Saya
                 Pelanggan Tirta Asasta</button>
             <button type="button" onclick="closedModal()"
-                class="inline-block py-4 w-96 max-w-full bg-[#CDCDCD] text-[#656565] text-lg rounded-lg font-semibold transition-all shadow hover:bg-[#B0B0B0] hover:text-[#3D3D3D]">Non Pelanggan Tirta Asasta</button>
+                class="inline-block py-4 w-96 max-w-full bg-[#CDCDCD] text-[#656565] text-lg rounded-lg font-semibold transition-all shadow hover:bg-[#B0B0B0] hover:text-[#3D3D3D]">Non
+                Pelanggan Tirta Asasta</button>
         </div>
 
         {{-- customer modal --}}
@@ -128,10 +248,10 @@
                     <div>
                         <div class="relative form-control col-span-1">
                             <input type="text" name="phone" id="customer-phone"
-                            class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
+                                class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
                             <label for="customer-phone"
-                            class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nomor
-                            Telpon</label>
+                                class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Nomor
+                                Telpon</label>
                         </div>
                     </div>
                 </div>
@@ -255,7 +375,8 @@
                     <input type="text" name="instagram" id="public-instagram"
                         class="peer focus:border-pdam-blue focus:outline-none focus:ring-0" placeholder="">
                     <label for="public-instagram"
-                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Instagram Username</label>
+                        class="peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-pdam-blue">Instagram
+                        Username</label>
                 </div>
                 <div class="flex justify-between items-start px-4 lg:px-10">
                     <p class="lg:text-lg font-medium">Ukuran Baju :</p>
@@ -385,11 +506,8 @@
             // handle radio stock info
             const forms = document.querySelectorAll('.modal form');
             forms.forEach(form => {
-                console.log(form);
                 const stockInfo = document.querySelector(`#${form.id} #stockInfo`);
-                console.log(stockInfo);
                 const radios = document.querySelectorAll(`#${form.id} input[name="shirt_stock_id"]`);
-                console.log(radios);
                 radios.forEach(radio => {
                     radio.addEventListener('change', () => {
                         stockInfo.classList.remove('hidden');
@@ -528,7 +646,6 @@
                 formData.delete('additional_participant[0][name]');
                 formData.delete('additional_participant[0][relation]');
             }
-            console.log(formData.getAll('additional_participant[][name]'));
             const value = Object.fromEntries(formData.entries());
             Swal.fire({
                 title: "Apakah data yang Anda masukkan sudah benar?",
@@ -557,7 +674,6 @@
                 },
                 allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
-                console.log(result);
                 if (result.isConfirmed) {
                     if (result.value.statusCode > 299) {
                         Swal.fire({
@@ -595,5 +711,78 @@
                 confirmButtonText: 'Kembali'
             });
         }
+
+        const track1 = "{{ asset('assets/img/simple-track.png') }}";
+        const track2 = "{{ asset('assets/img/detailed-track.png') }}";
+        const trackContainer = document.getElementById('trackContainer');
+        const trackInfo = document.getElementById('trackInfo');
+        const trackImageContainer = document.getElementById('trackImageContainer');
+        const track = document.getElementById('trackImageContainer').querySelector('img');
+        const trackTitle = trackInfo.querySelector('h2');
+        const trackTime = trackInfo.querySelector('#trackTime');
+
+        const trackToggle = () => {
+            track.src = track.src == track1 ? track2 : track1;
+
+            trackContainer.classList.toggle('sm:grid-cols-4');
+            trackContainer.classList.toggle('grid-cols-1');
+            trackContainer.classList.toggle('w-full');
+            trackInfo.classList.toggle('col-span-1');
+            trackInfo.classList.toggle('row-start-2');
+            trackImageContainer.classList.toggle('sm:col-span-3');
+            trackImageContainer.classList.toggle('col-span-1');
+            track.classList.toggle('object-cover');
+            trackImageContainer.classList.toggle('group');
+            trackTime.classList.toggle('hidden');
+            trackTitle.classList.toggle('hidden');
+            trackInfo.classList.toggle('sm:flex-col');
+            trackInfo.querySelector('.initial-detail').classList.toggle('hidden');
+            trackInfo.querySelector('.detail').classList.toggle('hidden');
+        }
+
+        trackContainer.addEventListener('mouseleave', () => {
+            if (track.src == track2) {
+                trackToggle();
+            }
+        });
+
+        const map1 = "{{ asset('assets/img/simple-map.png') }}";
+        const map2 = "{{ asset('assets/img/detailed-map.png') }}";
+        const mapContainer = document.getElementById('mapContainer');
+        const mapInfo = document.getElementById('mapInfo');
+        const mapImageContainer = document.getElementById('mapImageContainer');
+        const map = document.getElementById('mapImageContainer').querySelector('img');
+        const mapTitle = mapInfo.querySelector('h2');
+
+        const mapToggle = () => {
+            map.src = map.src == map1 ? map2 : map1;
+
+            mapContainer.classList.toggle('sm:grid-cols-4');
+            mapContainer.classList.toggle('grid-cols-1');
+            mapContainer.classList.toggle('w-full');
+            mapInfo.classList.toggle('col-span-1');
+            mapInfo.classList.toggle('row-start-2');
+            mapImageContainer.classList.toggle('sm:col-span-3');
+            mapImageContainer.classList.toggle('col-span-1');
+            map.classList.toggle('object-cover');
+            mapImageContainer.classList.toggle('group');
+            mapTitle.classList.toggle('hidden');
+            mapInfo.classList.toggle('sm:flex-col');
+        }
+
+        mapContainer.addEventListener('mouseleave', () => {
+            if (map.src == map2) {
+                mapToggle();
+            }
+        });
+
+        const navbar = document.querySelector('nav');
+        document.addEventListener('scroll', () => {
+            if (window.scrollY > window.innerHeight) {
+                navbar.classList.add('bg-pdam-dark-blue', 'shadow-2xl'); // Add class
+            } else {
+                navbar.classList.remove('bg-pdam-dark-blue', 'shadow-2xl'); // Remove class
+            }
+        });
     </script>
 @endpush

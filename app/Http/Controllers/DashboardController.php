@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Participant;
+use App\Models\Prize;
+use App\Models\PrizeWinner;
 use App\Models\ShirtStock;
+use App\Models\TopCustomer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -150,88 +153,94 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function doorprize()
+    public function doorprize(Request $req)
     {
-        $prizes = [
-            [
-                'name' => 'Hadiah 1',
-                'total' => 2,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 2',
-                'total' => 2,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 3',
-                'total' => 4,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 4',
-                'total' => 6,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 5',
-                'total' => 10,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 6',
-                'total' => 2,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 7',
-                'total' => 4,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 8',
-                'total' => 3,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 9',
-                'total' => 7,
-                'winners' => [],
-            ],
-            [
-                'name' => 'Hadiah 10',
-                'total' => 1,
-                'winners' => []
-            ],
-        ];
+        // check if request has prize_id
 
-        $winners = DB::table('participants')
-            ->whereNotNull('email_verified_at')
-            ->whereNotNull('customer_code')
-            ->inRandomOrder()
-            ->limit(15)
-            ->pluck('name', 'id');
+        $data = $req->validate([
+            'prize_id' => 'nullable|exists:prizes,id',
+        ]);
+
+        $prizes = Prize::all();
+
+        $winners = collect([]);
+        if (isset($data['prize_id'])) {
+            $winners = PrizeWinner::where('prize_id', $data['prize_id'])->get();
+        }
         // map each id and change it to padded number 4 digit
         $winners = $winners->mapWithKeys(function ($name, $id) {
             return [str_pad($id, 4, '0', STR_PAD_LEFT) => $name];
         });
-
-        // get first winner id and make it array character
-        $lastWinner = str_split($winners->keys()->first());
-        return view('dashboard.doorprize', compact('prizes', 'winners', 'lastWinner'));
+        return view('dashboard.doorprize', compact('prizes', 'winners'));
     }
 
     public function doorprizeSpin(Request $req)
     {
         $data = $req->validate([
-            'prize' => 'required|string|in:doorprize1,doorprize2,doorprize3,doorprize4,doorprize5,doorprize6,doorprize7,doorprize8,doorprize9,doorprize10',
-            'currentWinners' => 'required|array',
-            'currentWinners.*' => 'required|integer',
+            'prize_id' => 'required|exists:prizes,id',
         ]);
 
+        $prize = Prize::find($data['prize_id']);
+
+        $winnerCount = $prize->winners()->count();
+
+        if ($winnerCount >= $prize->amount) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Doorprize ini sudah dipilih semua pemenangnya',
+            ], 400);
+        }
+
+        $prizeWinner = new PrizeWinner();
+        $prizeWinner->prize_id = $prize->id;
+        $winnerIds = $prize->winners()->pluck('user_id')->toArray();
+
+        if ($prize->is_prime) {
+            $winner = TopCustomer::whereNotIn('customer_code', $winnerIds)->inRandomOrder()->first();
+            $prizeWinner->user_id = $winner->customer_code;
+        } else {
+            $winner = Participant::whereNotNull('email_verified_at')
+                ->whereNotIn('id', $winnerIds)
+                ->inRandomOrder()
+                ->first();
+            $prizeWinner->user_id =
+            str_pad($winner->id, 4, '0', STR_PAD_LEFT);
+        }
+
+        $prizeWinner->name = $winner->name;
+        $prizeWinner->save();
+
         return response()->json([
+            'status' => 'success',
             'message' => 'success',
-            'data' => $data,
+            'data' => $prizeWinner,
+        ]);
+    }
+
+    public function doorprizeWinner(Prize $prize)
+    {
+        $winners = PrizeWinner::where('prize_id', $prize->id)->get();
+
+        $winners->transform(function ($winner) {
+            $winner->user_id = str_pad($winner->user_id, 4, '0', STR_PAD_LEFT);
+            return $winner;
+        });
+
+        // return json
+        return response()->json([
+            'status' => 'success',
+            'message' => 'success',
+            'data' => $winners,
+        ]);
+    }
+
+    public function doorprizeDelete(PrizeWinner $prizeWinner)
+    {
+        $prizeWinner->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'success',
         ]);
     }
 }

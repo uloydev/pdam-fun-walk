@@ -37,10 +37,13 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->controller(D
     Route::get('/shirt', 'shirtIndex')->name('shirt.index');
 
 });
+Route::prefix('doorprize')->name('doorprize.')->middleware('auth')->controller(DashboardController::class)->group(function () {
+    Route::get('/', 'doorprize')->name('index');
+    Route::get('/spin', 'doorprizeSpin')->name('spin');
+    Route::get('/{prize}/winner', 'doorprizeWinner')->name('winner');
+    Route::get('/winner/{prizeWinner}/remove', 'doorprizeDelete')->name('remove-winner');
 
-Route::get('/doorprize', [DashboardController::class, 'doorprize'])->middleware('auth')->name('doorprize.index');
-Route::get('/doorprize/spin', [DashboardController::class, 'doorprizeSpin'])->middleware('auth')->name('doorprize.spin');
-
+});
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
